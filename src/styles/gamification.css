@@ -1,0 +1,160 @@
+.gamification-page {
+  color: #e2e8f0;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 50px 20px 80px;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #94a3b8;
+  margin-top: 6px;
+  margin-bottom: 50px;
+}
+
+/* ---------- XP Card ---------- */
+.xp-section {
+  display: flex;
+  justify-content: center;
+}
+
+.xp-card {
+  background: #111a2b;
+  padding: 28px 40px;
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
+  border-left: 4px solid #3b82f6;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+.xp-card h3 {
+  color: #60a5fa;
+  margin-bottom: 10px;
+}
+
+.xp-bar {
+  background: #1e293b;
+  height: 12px;
+  border-radius: 10px;
+  margin: 12px 0;
+  overflow: hidden;
+}
+
+.xp-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+}
+
+.streak {
+  color: #f87171;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* ---------- Badges ---------- */
+.badges-section {
+  margin-top: 70px;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.badge-card {
+  display: flex;
+  align-items: center;
+  background: #111a2b;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
+  border-left: 4px solid #3b82f6;
+  text-align: left;
+  gap: 14px;
+  transition: 0.3s ease;
+}
+
+.badge-card:hover {
+  background: #1e293b;
+  transform: translateY(-4px);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+}
+
+.badge-icon {
+  font-size: 2rem;
+}
+
+.badge-card h4 {
+  color: #60a5fa;
+  margin-bottom: 4px;
+}
+
+.badge-card p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+
+.leaderboard-section {
+  margin-top: 80px;
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.leader-card {
+  background: #111a2b;
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 3px solid #3b82f6;
+  transition: 0.3s ease;
+}
+
+.leader-card:hover {
+  background: #1e293b;
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+}
+
+.rank {
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.name {
+  flex: 1;
+  text-align: left;
+  margin-left: 10px;
+  color: #e2e8f0;
+}
+
+.xp {
+  color: #93c5fd;
+}
+
+@media (max-width: 600px) {
+  .xp-card {
+    padding: 24px;
+  }
+}

@@ -1,0 +1,189 @@
+/* ---------- Gradient Panel ---------- */
+.auth-gradient {
+  flex: 1;
+  background: linear-gradient(145deg, #2563eb, #1e40af);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft glow animation */
+.auth-gradient::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(96,165,250,0.3), transparent 70%);
+  animation: rotateGlow 8s linear infinite;
+}
+
+@keyframes rotateGlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Icon and text */
+.icon-container {
+  z-index: 2;
+  animation: fadeIn 1.5s ease;
+}
+
+.icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.icon-container h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.icon-container p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-top: 6px;
+}
+
+/* Entry animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* ---------- Dark Themed Inputs ---------- */
+.input-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  background: rgba(15, 23, 42, 0.8);
+  color: #e2e8f0;
+  font-size: 1rem;
+  transition: 0.3s ease;
+  outline: none;
+  box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.15);
+}
+
+.input-group input::placeholder {
+  color: #94a3b8;
+}
+
+.input-group input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+  background: rgba(15, 23, 42, 0.95);
+}
+.auth-form {
+  flex: 1;
+  padding: 60px 50px;
+  backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+/* ---------- Smooth Full Form Styling (Login & Signup Match) ---------- */
+.smooth-form {
+  flex: 1;
+  padding: 70px 80px;
+  backdrop-filter: blur(15px);
+  background: rgba(10, 15, 30, 0.8);
+  border-radius: 0;
+}
+
+.smooth-form h1 {
+  font-size: 2rem;
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.smooth-form .subtitle {
+  color: #94a3b8;
+  margin-bottom: 40px;
+}
+
+.smooth-form .input-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.smooth-form .input-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.smooth-form .input-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(15, 23, 42, 0.4);
+  color: #e2e8f0;
+  font-size: 1rem;
+  box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.1);
+  transition: 0.3s ease;
+  outline: none;
+}
+
+.smooth-form .input-group input::placeholder {
+  color: #64748b;
+}
+
+.smooth-form .input-group input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 25px rgba(96, 165, 250, 0.3);
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.smooth-form .btn-primary {
+  margin-top: 10px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 0;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+}
+
+.smooth-form .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(96, 165, 250, 0.4);
+}
+
+.smooth-form .switch-text {
+  margin-top: 25px;
+  text-align: left;
+  color: #94a3b8;
+}
+
+.smooth-form .switch-text a {
+  color: #60a5fa;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.smooth-form .switch-text a:hover {
+  color: #93c5fd;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .smooth-form {
+    padding: 40px 30px;
+  }
+}
