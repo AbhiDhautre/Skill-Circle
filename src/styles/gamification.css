@@ -1,160 +1,102 @@
 .gamification-page {
-  color: #e2e8f0;
   max-width: 1150px;
   margin: 0 auto;
-  padding: 50px 20px 80px;
+  padding: 14px 0 40px;
   text-align: center;
 }
 
-.page-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 .subtitle {
-  color: #94a3b8;
-  margin-top: 6px;
-  margin-bottom: 50px;
+  margin: 10px auto 40px;
+  max-width: 640px;
 }
 
-/* ---------- XP Card ---------- */
 .xp-section {
   display: flex;
   justify-content: center;
 }
 
-.xp-card {
-  background: #111a2b;
-  padding: 28px 40px;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
-  border-left: 4px solid #3b82f6;
-  text-align: center;
-  width: 100%;
-  max-width: 500px;
+.xp-card,
+.badge-card,
+.leader-card {
+  border-radius: var(--radius-lg);
+  background: rgba(255, 251, 246, 0.76);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
 }
 
-.xp-card h3 {
-  color: #60a5fa;
-  margin-bottom: 10px;
+.xp-card {
+  width: min(100%, 560px);
+  padding: 28px 32px;
+}
+
+.xp-card h3,
+.badge-card h4,
+.rank {
+  color: var(--surface-ink);
 }
 
 .xp-bar {
-  background: #1e293b;
   height: 12px;
-  border-radius: 10px;
-  margin: 12px 0;
+  margin: 14px 0 10px;
   overflow: hidden;
+  border-radius: 999px;
+  background: rgba(216, 162, 77, 0.2);
 }
 
 .xp-progress {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+  background: linear-gradient(135deg, var(--accent), var(--primary));
 }
 
 .streak {
-  color: #f87171;
-  font-weight: 600;
-  margin-top: 6px;
+  color: var(--primary);
+  font-weight: 700;
 }
 
-/* ---------- Badges ---------- */
-.badges-section {
-  margin-top: 70px;
+.badges-section,
+.leaderboard-section {
+  margin-top: 64px;
 }
 
 .badges-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 22px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 22px;
 }
 
 .badge-card {
   display: flex;
   align-items: center;
-  background: #111a2b;
-  border-radius: 16px;
-  padding: 18px 20px;
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
-  border-left: 4px solid #3b82f6;
-  text-align: left;
   gap: 14px;
-  transition: 0.3s ease;
-}
-
-.badge-card:hover {
-  background: #1e293b;
-  transform: translateY(-4px);
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  padding: 20px;
+  text-align: left;
 }
 
 .badge-icon {
   font-size: 2rem;
 }
 
-.badge-card h4 {
-  color: #60a5fa;
-  margin-bottom: 4px;
-}
-
 .badge-card p {
-  color: #94a3b8;
-  font-size: 0.9rem;
-}
-
-
-.leaderboard-section {
-  margin-top: 80px;
+  color: var(--muted);
 }
 
 .leaderboard {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 14px;
-  max-width: 500px;
-  margin: 0 auto;
+  width: min(100%, 560px);
+  margin: 20px auto 0;
 }
 
 .leader-card {
-  background: #111a2b;
-  border-radius: 10px;
-  padding: 14px 18px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
   align-items: center;
-  justify-content: space-between;
-  border-left: 3px solid #3b82f6;
-  transition: 0.3s ease;
+  padding: 16px 18px;
 }
 
-.leader-card:hover {
-  background: #1e293b;
-  transform: translateY(-3px);
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
-}
-
-.rank {
-  font-weight: 700;
-  color: #60a5fa;
-}
-
-.name {
-  flex: 1;
-  text-align: left;
-  margin-left: 10px;
-  color: #e2e8f0;
-}
-
+.name,
 .xp {
-  color: #93c5fd;
-}
-
-@media (max-width: 600px) {
-  .xp-card {
-    padding: 24px;
-  }
+  color: var(--muted);
 }

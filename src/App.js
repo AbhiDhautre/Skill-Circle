@@ -14,6 +14,7 @@ import Gamification from "./pages/Gamification";
 import FindSkills from "./pages/FindSkills";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import "./App.css";
 
 export const AuthContext = createContext();
 
@@ -24,10 +25,10 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <div className="page-shell">
         <Navbar />
-        <main style={{ flex: 1 }}>
-          <div className="container" style={{ paddingTop: 28, paddingBottom: 28 }}>
+        <main className="page-main">
+          <div className="container page-content">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/courses" element={<Courses />} />
@@ -41,7 +42,12 @@ function App() {
           </div>
         </main>
         <Footer />
-        <ToastContainer position="top-right" autoClose={2500} theme="dark" />
+        <ToastContainer
+          position="top-right"
+          autoClose={2500}
+          theme="light"
+          toastClassName="toast-theme"
+        />
       </div>
     </AuthContext.Provider>
   );

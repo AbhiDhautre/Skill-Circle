@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/navbar.css";
 import { AuthContext } from "../App"; // ✅ Import context
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,8 +20,11 @@ export default function Navbar() {
       <div className="nav-container">
         {/* ---------- Logo ---------- */}
         <div className="nav-logo">
-          <h2>Skill Circle</h2>
-          <p className="tagline">A Peer-to-Peer Skill Exchange</p>
+          <img src={logo} alt="Skill Circle" className="nav-logo-image" />
+          <div>
+            <h2>Skill Circle</h2>
+            <p className="tagline">A Peer-to-Peer Skill Exchange</p>
+          </div>
         </div>
 
         {/* ---------- Hamburger Menu ---------- */}

@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/footer.css";
-
+import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className="footer">
@@ -12,22 +12,23 @@ export default function Footer() {
 
         {/* Middle Links */}
         <div className="footer-links">
-          <a href="/">Home</a>
-          <a href="/courses">Courses</a>
-          <a href="/community">Community</a>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/findskills">Find Skills</a>
+          <Link to="/">Home</Link>
+          <Link to="/courses">Courses</Link>
+          <Link to="/community">Community</Link>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/findskills">Find Skills</Link>
+          <Link to="/gamification">Gamification</Link>
         </div>
 
         
         <div className="footer-socials">
-          <a href="#" aria-label="Instagram">
+          <a href="https://www.instagram.com/" aria-label="Instagram">
             <i className="fab fa-instagram"></i>
           </a>
-          <a href="#" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn">
             <i className="fab fa-linkedin"></i>
           </a>
-          <a href="#" aria-label="GitHub">
+          <a href="https://github.com/" aria-label="GitHub">
             <i className="fab fa-github"></i>
           </a>
         </div>

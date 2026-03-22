@@ -65,7 +65,7 @@ const handleConnect = (name) => {
       <div className="search-section">
         <input
           type="text"
-          className="search-bar"
+          className="search-bar input-surface"
           placeholder="Search by skill, name, or role..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}

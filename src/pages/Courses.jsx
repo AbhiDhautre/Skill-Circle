@@ -61,7 +61,7 @@ export default function Courses() {
 
         <input
           type="text"
-          className="search-box"
+          className="search-box input-surface"
           placeholder="Search for a course..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}

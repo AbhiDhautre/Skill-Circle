@@ -4,6 +4,7 @@ import { AuthContext } from "../App";
 import { toast } from "react-toastify";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import "../styles/auth.css";
 
 export default function Login() {
   const { setIsLoggedIn } = useContext(AuthContext);
@@ -30,58 +31,51 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-page" style={{ textAlign: "center", color: "white" }}>
-      <h2 style={{ marginBottom: "20px" }}>Welcome Back 👋</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-form smooth-form">
+          <h2>Welcome Back</h2>
+          <p className="subtitle">
+            Pick up where you left off and continue learning with your circle.
+          </p>
 
-      <form onSubmit={handleLogin} style={{ display: "inline-block", textAlign: "left" }}>
-        
-        <label>Email</label>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{
-            padding: "8px",
-            width: "250px",
-            borderRadius: "6px",
-            marginBottom: "15px",
-          }}
-        />
+          <form onSubmit={handleLogin}>
+            <div className="input-group">
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-        <label>Password</label>
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{
-            padding: "8px",
-            width: "250px",
-            borderRadius: "6px",
-            marginBottom: "15px",
-          }}
-        />
+            <div className="input-group">
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-          style={{
-            background: "#3b82f6",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            padding: "10px 20px",
-            cursor: "pointer",
-            width: "100%",
-          }}
-        >
-          Login
-        </button>
+            <button type="submit" className="btn btn-primary full-width">
+              Login
+            </button>
+          </form>
+        </div>
 
-      </form>
+        <div className="auth-gradient">
+          <div className="icon-container">
+            <span className="icon">☕</span>
+            <h2>Return To Your Circle</h2>
+            <p>Reconnect with peers, sessions, and progress that already have your momentum.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
