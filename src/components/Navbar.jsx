@@ -11,6 +11,7 @@ export default function Navbar() {
   // ✅ Logout Handler
   const handleLogout = () => {
     localStorage.removeItem("userName");
+    localStorage.removeItem("primarySkill");
     localStorage.setItem("isLoggedIn", "false");
     setIsLoggedIn(false);
   };

@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/auth.css";
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../App";
 
 export default function Signup() {
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,10 +18,21 @@ export default function Signup() {
     e.preventDefault(); // prevents page reload
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("Signup Successful!");
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      await updateProfile(userCredential.user, {
+        displayName: name.trim(),
+      });
+
+      localStorage.setItem("userName", name.trim());
+      localStorage.setItem("primarySkill", skill.trim());
+      localStorage.setItem("isLoggedIn", "true");
+
+      setIsLoggedIn(true);
+      toast.success("Signup successful!");
+      navigate("/dashboard");
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 

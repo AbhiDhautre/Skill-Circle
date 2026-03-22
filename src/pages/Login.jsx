@@ -17,10 +17,18 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const signedInUser = userCredential.user;
+
+      const resolvedName =
+        signedInUser.displayName ||
+        localStorage.getItem("userName") ||
+        signedInUser.email?.split("@")[0] ||
+        "Skill Circle Learner";
 
       toast.success("🎉 Login Successful!");
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userName", resolvedName);
 
       setIsLoggedIn(true);
       navigate("/dashboard");

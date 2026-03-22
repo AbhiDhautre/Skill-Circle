@@ -1,14 +1,19 @@
 import React from "react";
 import "../styles/dashboard.css";
-
+import { auth } from "../firebase";
 
 
 export default function Dashboard() {
+  const storedName = localStorage.getItem("userName");
+  const authName = auth.currentUser?.displayName;
+  const emailName = auth.currentUser?.email?.split("@")[0];
+  const primarySkill = localStorage.getItem("primarySkill");
+
   const user = {
-    name: "Abhishek Sharma",
+    name: authName || storedName || emailName || "Skill Circle Learner",
     avatar:
       "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    skills: ["React", "Python", "UI/UX"],
+    skills: primarySkill ? [primarySkill, "Python", "UI/UX"] : ["React", "Python", "UI/UX"],
     xp: 1250,
     level: 5,
     badges: [
