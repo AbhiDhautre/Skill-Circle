@@ -1,74 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/courses.css";
 import { toast } from "react-toastify";
-
-
-
+import { enrollInCourse, subscribeToCourses, defaultCourses } from "../utils/appState";
 
 export default function Courses() {
-  const [query, setQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [courses, setCourses] = useState(defaultCourses);
 
-  const courses = [
-    {
-      id: 1,
-      title: "React Frontend Development",
-      mentor: "Aisha Sharma",
-      duration: "6 weeks",
-      tags: ["Frontend", "JavaScript", "React"],
-    },
-    {
-      id: 2,
-      title: "Data Structures & Algorithms",
-      mentor: "Rohit Mehta",
-      duration: "8 weeks",
-      tags: ["C++", "Logic", "DSA"],
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Essentials",
-      mentor: "Nina Patel",
-      duration: "4 weeks",
-      tags: ["Figma", "Design Thinking"],
-    },
-    {
-      id: 4,
-      title: "Machine Learning with Python",
-      mentor: "Deep Verma",
-      duration: "10 weeks",
-      tags: ["AI", "Python", "ML"],
-    },
-    {
-      id: 5,
-      title: "Full Stack with Node.js",
-      mentor: "Aarav Nair",
-      duration: "12 weeks",
-      tags: ["Backend", "Node", "MongoDB"],
-    },
-  ];
+  // Real-time global course catalog from Firestore
+  useEffect(() => {
+    const unsubscribe = subscribeToCourses((liveCourses) => {
+      setCourses(liveCourses);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const filtered = courses.filter((course) =>
-    course.title.toLowerCase().includes(query.toLowerCase())
+    course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    course.mentor?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    course.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
     <div className="courses-page">
-      {/* Header */}
       <div className="courses-header">
         <h1>Explore Courses</h1>
         <p className="subtitle">
           Learn from your peers and mentors across campus — anytime, anywhere.
         </p>
-
         <input
           type="text"
           className="search-box input-surface"
           placeholder="Search for a course..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
-      {/* Courses Grid */}
       <div className="courses-grid">
         {filtered.length > 0 ? (
           filtered.map((course) => (
@@ -80,21 +48,33 @@ export default function Courses() {
               <div className="course-body">
                 <p className="duration">⏱ {course.duration}</p>
                 <div className="tags">
-                  {course.tags.map((tag, index) => (
-                    <span key={index} className="tag">
-                      {tag}
-                    </span>
+                  {course.tags?.map((tag, index) => (
+                    <span key={index} className="tag">{tag}</span>
                   ))}
                 </div>
               </div>
-              <button onClick={() => toast.info(" Enrolled successfully!")}> Enroll Now !</button>
+              <button
+                onClick={async () => {
+                  try {
+                    const result = await enrollInCourse(course);
+                    toast[result.added ? "success" : "info"](
+                      result.added
+                        ? `Enrolled in ${course.title}`
+                        : `You are already enrolled in ${course.title}`
+                    );
+                  } catch (e) {
+                    toast.error("Failed to enroll! Please try again.");
+                  }
+                }}
+              >
+                Enroll Now
+              </button>
             </div>
           ))
         ) : (
-          <p className="no-results">No courses found.</p>
+          <p className="no-results">{courses.length === 0 ? "Loading courses..." : "No courses found."}</p>
         )}
       </div>
-      
     </div>
   );
 }

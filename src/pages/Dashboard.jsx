@@ -1,21 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/dashboard.css";
 import { auth } from "../firebase";
-
+import { subscribeToUser, defaultCourses, acceptConnectionRequest, declineConnectionRequest } from "../utils/appState";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
-  const storedName = localStorage.getItem("userName");
+  const [profile, setProfile] = useState({ name: "", primarySkill: "" });
+  const [enrolledCourses, setEnrolledCourses] = useState(defaultCourses.slice(0, 3));
+  const [connections, setConnections] = useState([]);
+  const [xp, setXp] = useState(1250);
+  const [incomingRequests, setIncomingRequests] = useState([]);
+
+  // Real-time user data listener — includes incoming connection requests
+  useEffect(() => {
+    const unsubscribe = subscribeToUser(({ profile, enrollments, connections, xp, incomingRequests }) => {
+      setProfile(profile);
+      setEnrolledCourses(enrollments);
+      setConnections(connections);
+      setXp(xp);
+      setIncomingRequests(incomingRequests || []);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleAccept = async (request) => {
+    await acceptConnectionRequest(request);
+    toast.success(`You are now connected with ${request.fromName}! 🎉`);
+  };
+
+  const handleDecline = async (request) => {
+    await declineConnectionRequest(request);
+    toast.info(`Connection request from ${request.fromName} declined.`);
+  };
+
   const authName = auth.currentUser?.displayName;
   const emailName = auth.currentUser?.email?.split("@")[0];
-  const primarySkill = localStorage.getItem("primarySkill");
+  const level = Math.max(1, Math.floor(xp / 250) + 1);
 
   const user = {
-    name: authName || storedName || emailName || "Skill Circle Learner",
-    avatar:
-      "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    skills: primarySkill ? [primarySkill, "Python", "UI/UX"] : ["React", "Python", "UI/UX"],
-    xp: 1250,
-    level: 5,
+    name: authName || profile?.name || emailName || "Skill Circle Learner",
+    avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
+    skills: profile?.primarySkill ? [profile.primarySkill, "Python", "UI/UX"] : ["React", "Python", "UI/UX"],
+    xp,
+    level,
     badges: [
       { name: "Skill Mentor", icon: "🏅" },
       { name: "Fast Learner", icon: "⚡" },
@@ -23,21 +50,46 @@ export default function Dashboard() {
     ],
   };
 
-  const enrolledCourses = [
-    { title: "React Frontend Development", progress: 75 },
-    { title: "Machine Learning with Python", progress: 40 },
-    { title: "UI/UX Design Essentials", progress: 100 },
-  ];
-
   const recentActivity = [
-    "Completed UI/UX Design Essentials ",
-    "Joined React Frontend Development ",
-    "Earned Fast Learner badge",
+    `${connections.length} peer connection${connections.length === 1 ? "" : "s"} started`,
+    `${enrolledCourses.length} enrolled course${enrolledCourses.length === 1 ? "" : "s"} in progress`,
+    `${enrolledCourses.filter((c) => c.progress >= 100).length} course${enrolledCourses.filter((c) => c.progress >= 100).length === 1 ? "" : "s"} completed`,
   ];
 
   return (
     <div className="dashboard-page">
-     
+
+      {/* ── Real-time Connection Requests Banner ── */}
+      {incomingRequests.length > 0 && (
+        <section className="requests-section">
+          <h2 className="section-title">
+            🔔 Connection Requests
+            <span className="request-badge">{incomingRequests.length}</span>
+          </h2>
+          <div className="requests-list">
+            {incomingRequests.map((req, i) => (
+              <div key={i} className="request-card">
+                <div className="request-info">
+                  <img
+                    src="https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png"
+                    alt="avatar"
+                    className="request-avatar"
+                  />
+                  <div>
+                    <p className="request-name">{req.fromName}</p>
+                    <p className="request-skill">Skill: {req.fromSkill}</p>
+                  </div>
+                </div>
+                <div className="request-actions">
+                  <button className="btn-accept" onClick={() => handleAccept(req)}>✓ Accept</button>
+                  <button className="btn-decline" onClick={() => handleDecline(req)}>✕ Decline</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section className="profile-card">
         <img src={user.avatar} alt="User" className="avatar" />
         <div>
@@ -51,15 +103,14 @@ export default function Dashboard() {
         </div>
       </section>
 
-     
       <section className="stats-grid">
         <div className="stat-card">
           <h3>Courses Completed</h3>
-          <p className="stat-num">12</p>
+          <p className="stat-num">{enrolledCourses.filter((c) => c.progress >= 100).length}</p>
         </div>
         <div className="stat-card">
-          <h3>Badges Earned</h3>
-          <p className="stat-num">{user.badges.length}</p>
+          <h3>Peer Connections</h3>
+          <p className="stat-num">{connections.length}</p>
         </div>
         <div className="stat-card">
           <h3>Total XP</h3>
@@ -67,18 +118,15 @@ export default function Dashboard() {
         </div>
       </section>
 
-   
       <section className="enrolled-section">
         <h2 className="section-title">Your Enrolled Courses</h2>
         <div className="enrolled-grid">
           {enrolledCourses.map((c, i) => (
             <div key={i} className="course-card">
               <h4>{c.title}</h4>
+              <p className="muted">with {c.mentor}</p>
               <div className="progress-bar">
-                <div
-                  className="progress"
-                  style={{ width: `${c.progress}%` }}
-                ></div>
+                <div className="progress" style={{ width: `${c.progress}%` }}></div>
               </div>
               <p className="muted">{c.progress}% completed</p>
             </div>
@@ -86,7 +134,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      
       <section className="badges-section">
         <h2 className="section-title">Achievements</h2>
         <div className="badges-grid">
@@ -107,7 +154,6 @@ export default function Dashboard() {
           ))}
         </ul>
       </section>
-     
     </div>
   );
 }

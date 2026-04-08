@@ -1,65 +1,181 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/findskills.css";
 import { toast } from "react-toastify";
-
+import {
+  subscribeToAllUsers, subscribeToUser,
+  sendConnectionRequest, acceptConnectionRequest, declineConnectionRequest,
+  connectWithPeer, suggestedPeers,
+  subscribeToSkillPosts, saveSkillPost
+} from "../utils/appState";
+import { auth } from "../firebase";
 
 export default function FindSkills() {
-  const [query, setQuery] = useState("");
-const handleConnect = (name) => {
-  toast.success(`Connection request sent to ${name}`);
-};
-  const users = [
-    {
-      name: "Aarav Nair",
-      skill: "React JS",
-      role: "Frontend Developer",
-      lookingFor: "UI/UX Designer",
-      avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    },
-    {
-      name: "Nina Patel",
-      skill: "Figma",
-      role: "UI/UX Designer",
-      lookingFor: "React Developer",
-      avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    },
-    {
-      name: "Rohit Mehta",
-      skill: "Machine Learning",
-      role: "Data Scientist",
-      lookingFor: "Python Learner",
-      avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    },
-    {
-      name: "Aisha Sharma",
-      skill: "Java",
-      role: "Backend Developer",
-      lookingFor: "Frontend Partner",
-      avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    },
-    {
-      name: "Deep Verma",
-      skill: "Python",
-      role: "AI Enthusiast",
-      lookingFor: "Data Analyst",
-      avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
-    },
-  ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [allUsers, setAllUsers] = useState(suggestedPeers);
+  const [myProfile, setMyProfile] = useState({});
+  const [myConnections, setMyConnections] = useState([]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
+  const [sentRequests, setSentRequests] = useState([]);
+  const [sending, setSending] = useState(null);
 
-  const filtered = users.filter(
+  // Skill Exchange Board states
+  const [skillPosts, setSkillPosts] = useState([]);
+  const [showPostForm, setShowPostForm] = useState(false);
+  const [postContent, setPostContent] = useState("");
+  const [postSkillMatch, setPostSkillMatch] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
+
+ 
+  useEffect(() => {
+    const unsubscribe = subscribeToUser(({ profile, connections, incomingRequests }) => {
+      setMyProfile(profile);
+      setMyConnections(connections || []);
+      setIncomingRequests(incomingRequests || []);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Real-time all users
+  useEffect(() => {
+    const unsubscribe = subscribeToAllUsers((users) => {
+      const currentUid = auth.currentUser?.uid;
+      const others = users.filter((u) => u.id !== currentUid);
+      setAllUsers(others.length > 0 ? others : suggestedPeers);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Real-time skill posts
+  useEffect(() => {
+    const unsubscribe = subscribeToSkillPosts((posts) => {
+      setSkillPosts(posts);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const isConnected = (userId) => myConnections.some((c) => c.id === userId);
+  const hasSentRequest = (userId) => sentRequests.includes(userId);
+  const hasIncomingRequest = (userId) => incomingRequests.find((r) => r.fromUid === userId);
+
+  const handleSendRequest = async (user) => {
+    if (!auth.currentUser) {
+      toast.error("Please log in to send connection requests.");
+      return;
+    }
+    setSending(user.id);
+
+    // Real Firestore user: id is a string UID (length > 10 and not a number)
+    const isRealUser = typeof user.id === "string" && isNaN(user.id) && user.id.length > 8;
+
+    if (isRealUser) {
+      // Send a real-time request that appears on their Dashboard/FindSkills
+      const result = await sendConnectionRequest(user.id, myProfile);
+      if (result.sent) {
+        setSentRequests((prev) => [...prev, user.id]);
+        toast.success(`Connection request sent to ${user.name}! 🤝`);
+      } else {
+        toast.error("Could not send request. Please try again.");
+      }
+    } else {
+      // Mock/demo user — just save to local connections list
+      const result = await connectWithPeer(user);
+      if (result.added) {
+        setSentRequests((prev) => [...prev, user.id]);
+        toast.success(`Connected with ${user.name}! 🤝`);
+      } else {
+        toast.info(`You are already connected with ${user.name}`);
+      }
+    }
+    setSending(null);
+  };
+
+  const handleAccept = async (request) => {
+    await acceptConnectionRequest(request);
+    toast.success(`You are now connected with ${request.fromName}! 🎉`);
+  };
+
+  const handleDecline = async (request) => {
+    await declineConnectionRequest(request);
+    toast.info(`Request from ${request.fromName} declined.`);
+  };
+
+  const filtered = allUsers.filter(
     (user) =>
-      user.name.toLowerCase().includes(query.toLowerCase()) ||
-      user.skill.toLowerCase().includes(query.toLowerCase()) ||
-      user.role.toLowerCase().includes(query.toLowerCase()) ||
-      user.lookingFor.toLowerCase().includes(query.toLowerCase())
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.skill.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleCreatePost = async () => {
+    if (!auth.currentUser) {
+      toast.error("Please log in to post.");
+      return;
+    }
+    if (!postContent.trim() || !postSkillMatch.trim()) {
+      toast.error("Please fill in both fields.");
+      return;
+    }
+    setIsPosting(true);
+    try {
+      await saveSkillPost({
+        authorUid: auth.currentUser.uid,
+        authorName: myProfile.name || "Skill Circle Learner",
+        authorAvatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
+        content: postContent,
+        lookingFor: postSkillMatch,
+      });
+      toast.success("Skill request posted successfully! 🎉");
+      setPostContent("");
+      setPostSkillMatch("");
+      setShowPostForm(false);
+    } catch (err) {
+      toast.error("Failed to post request.");
+    }
+    setIsPosting(false);
+  };
+
+  const renderActions = (user) => {
+    // Case 1: Already connected
+    if (isConnected(user.id)) {
+      return <button className="connect-btn connected" disabled>✅ Connected</button>;
+    }
+
+    // Case 2: This user sent ME a request — show Accept / Decline inline
+    const incomingFromThis = hasIncomingRequest(user.id);
+    if (incomingFromThis) {
+      return (
+        <div className="inline-request-actions">
+          <p className="incoming-label">🔔 Wants to connect with you</p>
+          <div className="action-row">
+            <button className="btn-accept" onClick={() => handleAccept(incomingFromThis)}>✓ Accept</button>
+            <button className="btn-decline" onClick={() => handleDecline(incomingFromThis)}>✕ Decline</button>
+          </div>
+        </div>
+      );
+    }
+
+    // Case 3: I already sent them a request
+    if (hasSentRequest(user.id)) {
+      return <button className="connect-btn pending" disabled>Request Sent</button>;
+    }
+
+    // Case 4: No relation — show Connect button
+    return (
+      <button
+        className="connect-btn"
+        onClick={() => handleSendRequest(user)}
+        disabled={sending === user.id}
+      >
+        {sending === user.id ? "Sending..." : "Connect"}
+      </button>
+    );
+  };
 
   return (
     <div className="findskills-page">
       <h1 className="page-title">Find Skills & Connect</h1>
       <p className="subtitle">
-        Search for peers who have the skills you want to learn — or who need the
-        skills you have.
+        Search for peers who have the skills you want to learn — or who need the skills you have.
       </p>
 
       <div className="search-section">
@@ -67,15 +183,91 @@ const handleConnect = (name) => {
           type="text"
           className="search-bar input-surface"
           placeholder="Search by skill, name, or role..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
+        <button 
+          className="btn btn-primary ml-10" 
+          onClick={() => setShowPostForm(!showPostForm)}
+          style={{ marginLeft: "14px" }}
+        >
+          {showPostForm ? "✕ Cancel" : "+ Request a Skill"}
+        </button>
       </div>
+
+      {/* Post Creation Form */}
+      {showPostForm && (
+        <div className="create-post-card">
+          <h3 style={{ marginTop: 0, color: "var(--surface-ink)" }}>Ask the community for a connection</h3>
+          <textarea
+            className="input-surface mb-2"
+            placeholder="E.g., I'm building a React app and need help with CSS design..."
+            value={postContent}
+            onChange={(e) => setPostContent(e.target.value)}
+            rows={3}
+            style={{ width: "100%", marginBottom: "12px", resize: "vertical" }}
+          />
+          <input
+            type="text"
+            className="input-surface"
+            placeholder="Looking for (Skill): e.g., UI/UX, Backend..."
+            value={postSkillMatch}
+            onChange={(e) => setPostSkillMatch(e.target.value)}
+            style={{ width: "100%", marginBottom: "16px" }}
+          />
+          <button 
+            className="btn btn-primary" 
+            onClick={handleCreatePost}
+            disabled={isPosting}
+            style={{ width: "100%" }}
+          >
+            {isPosting ? "Posting..." : "Post Request"}
+          </button>
+        </div>
+      )}
+
+      {/* Skill Exchange Board (Live Posts) */}
+      {skillPosts.length > 0 && !searchQuery && (
+        <div className="skill-board">
+          <h2 className="section-title">📢 Active Skill Requests</h2>
+          <div className="board-grid">
+            {skillPosts.map(post => (
+              <div key={post.id} className="board-post-card">
+                <div className="profile" style={{ marginBottom: "8px" }}>
+                  <img src={post.authorAvatar} alt="User" className="avatar" style={{ width: "40px", height: "40px" }} />
+                  <div>
+                    <h4 style={{ margin: 0, color: "var(--surface-ink)" }}>{post.authorName}</h4>
+                  </div>
+                </div>
+                <p className="post-content" style={{ margin: "8px 0", fontSize: "0.95rem", lineHeight: 1.5 }}>
+                  {post.content}
+                </p>
+                <div className="tag-row" style={{ marginTop: "12px" }}>
+                  <span className="tag" style={{ background: "rgba(201, 108, 74, 0.15)", color: "var(--primary)" }}>
+                    🔍 Looking for: {post.lookingFor}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <hr style={{ margin: "32px 0", border: "none", borderTop: "1px solid var(--line)" }} />
+        </div>
+      )}
+
+      {/* Pending incoming requests count */}
+      {incomingRequests.length > 0 && (
+        <div className="pending-banner">
+          🔔 You have <strong>{incomingRequests.length}</strong> pending connection request{incomingRequests.length !== 1 ? "s" : ""} below
+        </div>
+      )}
 
       <div className="skills-grid">
         {filtered.length > 0 ? (
-          filtered.map((user, i) => (
-            <div key={i} className="skill-card">
+          filtered.map((user) => (
+            <div
+              key={user.id}
+              className={`skill-card ${hasIncomingRequest(user.id) ? "has-request" : ""}`}
+            >
               <div className="profile">
                 <img src={user.avatar} alt="User" className="avatar" />
                 <div>
@@ -84,21 +276,16 @@ const handleConnect = (name) => {
                 </div>
               </div>
               <div className="info">
-                <p>
-                  <strong>Skill:</strong> {user.skill}
-                </p>
-                <p>
-                  <strong>Looking for:</strong> {user.lookingFor}
-                </p>
+                <p><strong>Skill:</strong> {user.skill}</p>
+                <p><strong>Looking for:</strong> {user.lookingFor}</p>
               </div>
-              <button onClick={() => handleConnect(user.name)} className="connect-btn"> Connect</button>
+              {renderActions(user)}
             </div>
           ))
         ) : (
           <p className="no-results">No matching users found</p>
         )}
       </div>
-       
     </div>
   );
 }

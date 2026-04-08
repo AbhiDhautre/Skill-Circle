@@ -1,82 +1,43 @@
 import React, { useState, useEffect } from "react";
 import "../styles/community.css";
+import { toast } from "react-toastify";
+import { subscribeToPosts, getProfile, savePost, addXp, defaultPosts } from "../utils/appState";
 
 export default function Community() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(defaultPosts);
   const [showForm, setShowForm] = useState(false);
-  const [newPost, setNewPost] = useState({
-    author: "",
-    title: "",
-    content: "",
-    tags: "",
-  });
-  const [commentInputs, setCommentInputs] = useState({}); 
+  const [newPost, setNewPost] = useState({ author: "", title: "", content: "", tags: "" });
+  const [commentInputs, setCommentInputs] = useState({});
 
-  
+  // Load author name once
   useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem("communityPosts"));
-    if (savedPosts && savedPosts.length > 0) {
-      setPosts(savedPosts);
-    } else {
-      setPosts([
-        {
-          id: 1,
-          author: "Aarav Nair",
-          title: "Looking for a React study group!",
-          content:
-            "Hey everyone! I’m forming a small React JS study circle for this weekend. Anyone interested?",
-          tags: ["React", "Frontend", "Collaboration"],
-          time: "2h ago",
-          likes: 4,
-          comments: [],
-        },
-        {
-          id: 2,
-          author: "Nina Patel",
-          title: "Need design feedback",
-          content:
-            "I’ve created a poster for the upcoming college fest — would love some feedback from design folks.",
-          tags: ["UI/UX", "Figma", "Design"],
-          time: "5h ago",
-          likes: 2,
-          comments: [],
-        },
-        {
-          id: 3,
-          author: "Deep Verma",
-          title: "DSA challenge for this week",
-          content:
-            "Let’s solve 10 Leetcode questions together this weekend! Who’s in?",
-          tags: ["DSA", "Coding", "Problem Solving"],
-          time: "1d ago",
-          likes: 3,
-          comments: [],
-        },
-      ]);
-    }
+    getProfile().then((profile) => {
+      if (profile.name) {
+        setNewPost((cur) => ({ ...cur, author: profile.name }));
+      }
+    });
   }, []);
 
-  
+  // Real-time posts listener — automatically updates when any user posts
   useEffect(() => {
-    localStorage.setItem("communityPosts", JSON.stringify(posts));
-  }, [posts]);
-
+    const unsubscribe = subscribeToPosts((livePosts) => {
+      setPosts(livePosts);
+    });
+    return () => unsubscribe(); // cleanup on unmount
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewPost({ ...newPost, [name]: value });
   };
 
- 
-  const handleAddPost = (e) => {
+  const handleAddPost = async (e) => {
     e.preventDefault();
     if (!newPost.author || !newPost.title || !newPost.content) {
-      alert("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.");
       return;
     }
-
     const newPostObj = {
-      id: Date.now(),
       author: newPost.author,
       title: newPost.title,
       content: newPost.content,
@@ -85,99 +46,64 @@ export default function Community() {
       likes: 0,
       comments: [],
     };
-
-    setPosts([newPostObj, ...posts]);
-    setNewPost({ author: "", title: "", content: "", tags: "" });
+    await savePost(newPostObj); // real-time listener will pick this up automatically
+    const profile = await getProfile();
+    setNewPost({ author: profile.name || "", title: "", content: "", tags: "" });
     setShowForm(false);
+    await addXp(80);
+    toast.success("Post published to the community.");
   };
 
-
-  const handleLike = (id) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === id ? { ...post, likes: post.likes + 1 } : post
-      )
-    );
+  const handleLike = async (id) => {
+    setPosts(posts.map((post) => (post.id === id ? { ...post, likes: post.likes + 1 } : post)));
+    await addXp(10);
   };
 
-
-  const handleAddComment = (id) => {
-    if (!commentInputs[id]) return;
+  const handleAddComment = async (id) => {
+    if (!commentInputs[id]) {
+      toast.info("Write a comment before posting.");
+      return;
+    }
     const updatedPosts = posts.map((post) =>
-      post.id === id
-        ? {
-            ...post,
-            comments: [...post.comments, commentInputs[id]],
-          }
-        : post
+      post.id === id ? { ...post, comments: [...post.comments, commentInputs[id]] } : post
     );
     setPosts(updatedPosts);
     setCommentInputs({ ...commentInputs, [id]: "" });
+    await addXp(20);
+    toast.success("Comment added.");
   };
 
-
-  const handleShare = (post) => {
-    navigator.clipboard.writeText(
-      `${window.location.href}?post=${post.id}`
-    );
-    alert("Post link copied to clipboard!");
+  const handleShare = async (post) => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}/community?post=${post.id}`);
+      toast.success("Post link copied to clipboard.");
+    } catch {
+      toast.error("Could not copy the post link.");
+    }
   };
 
   return (
     <div className="community-page">
-    
       <div className="community-header">
         <div>
           <h1>Community</h1>
-          <p className="subtitle">
-            Connect with peers, share knowledge, and grow your skills together.
-          </p>
+          <p className="subtitle">Connect with peers, share knowledge, and grow your skills together.</p>
         </div>
         <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
           {showForm ? "Close" : "+ Create Post"}
         </button>
       </div>
 
-      
       {showForm && (
         <form className="create-post-form" onSubmit={handleAddPost}>
-          <input
-            type="text"
-            name="author"
-            placeholder="Your Name"
-            value={newPost.author}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="text"
-            name="title"
-            placeholder="Post Title"
-            value={newPost.title}
-            onChange={handleInputChange}
-            required
-          />
-          <textarea
-            name="content"
-            placeholder="Write something..."
-            value={newPost.content}
-            onChange={handleInputChange}
-            required
-          ></textarea>
-          <input
-            type="text"
-            name="tags"
-            placeholder="Tags (comma separated)"
-            value={newPost.tags}
-            onChange={handleInputChange}
-          />
-          <button type="submit" className="btn btn-primary">
-            Post
-          </button>
+          <input type="text" name="author" placeholder="Your Name" value={newPost.author} onChange={handleInputChange} required />
+          <input type="text" name="title" placeholder="Post Title" value={newPost.title} onChange={handleInputChange} required />
+          <textarea name="content" placeholder="Write something..." value={newPost.content} onChange={handleInputChange} required></textarea>
+          <input type="text" name="tags" placeholder="Tags (comma separated)" value={newPost.tags} onChange={handleInputChange} />
+          <button type="submit" className="btn btn-primary">Post</button>
         </form>
       )}
 
-     
       <div className="feed">
         {posts.map((post) => (
           <div key={post.id} className="post-card">
@@ -193,57 +119,32 @@ export default function Community() {
 
             <div className="tags">
               {post.tags.map((tag, i) => (
-                <span key={i} className="tag">
-                  {tag}
-                </span>
+                <span key={i} className="tag">{tag}</span>
               ))}
             </div>
 
             <div className="actions">
-              <button className="btn-action" onClick={() => handleLike(post.id)}>
-                ❤️ Like ({post.likes})
-              </button>
-              <button
-                className="btn-action"
-                onClick={() =>
-                  setCommentInputs({
-                    ...commentInputs,
-                    [post.id]: commentInputs[post.id] || "",
-                  })
-                }
-              >
-                💬 Comment
-              </button>
-              <button className="btn-action" onClick={() => handleShare(post)}>
-                🔗 Share
-              </button>
+              <button className="btn-action" onClick={() => handleLike(post.id)}>❤️ Like ({post.likes})</button>
+              <button className="btn-action" onClick={() => setCommentInputs({ ...commentInputs, [post.id]: commentInputs[post.id] || "" })}>💬 Comment</button>
+              <button className="btn-action" onClick={() => handleShare(post)}>🔗 Share</button>
             </div>
 
-           
             {commentInputs[post.id] !== undefined && (
               <div className="comment-box">
                 <input
                   type="text"
                   placeholder="Write a comment..."
                   value={commentInputs[post.id]}
-                  onChange={(e) =>
-                    setCommentInputs({
-                      ...commentInputs,
-                      [post.id]: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setCommentInputs({ ...commentInputs, [post.id]: e.target.value })}
                 />
                 <button onClick={() => handleAddComment(post.id)}>Post</button>
               </div>
             )}
 
-           
             {post.comments.length > 0 && (
               <div className="comments-list">
                 {post.comments.map((c, i) => (
-                  <p key={i} className="comment">
-                     {c}
-                  </p>
+                  <p key={i} className="comment"> {c}</p>
                 ))}
               </div>
             )}

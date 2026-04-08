@@ -1,23 +1,26 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../App";
 import { toast } from "react-toastify";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { saveProfile } from "../utils/appState";
 import "../styles/auth.css";
 
 export default function Login() {
   const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [email, setEmail] = useState("");
+  const [enrollmentNumber, setEnrollmentNumber] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const dummyEmail = `${enrollmentNumber.trim()}@mitadt.edu`;
+      const userCredential = await signInWithEmailAndPassword(auth, dummyEmail, password);
       const signedInUser = userCredential.user;
 
       const resolvedName =
@@ -28,10 +31,16 @@ export default function Login() {
 
       toast.success("🎉 Login Successful!");
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userName", resolvedName);
+      saveProfile({
+        name: resolvedName,
+        enrollmentNumber: enrollmentNumber.trim(),
+        email: signedInUser.email || "",
+        primarySkill: localStorage.getItem("primarySkill") || "React",
+        bio: "Peer learner building skills one exchange at a time."
+      });
 
       setIsLoggedIn(true);
-      navigate("/dashboard");
+      navigate(location.state?.from || "/dashboard");
 
     } catch (error) {
       toast.error(error.message);
@@ -49,12 +58,12 @@ export default function Login() {
 
           <form onSubmit={handleLogin}>
             <div className="input-group">
-              <label>Email</label>
+              <label>Enrollment Number</label>
               <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="Enter your enrollment number"
+                value={enrollmentNumber}
+                onChange={(e) => setEnrollmentNumber(e.target.value)}
                 required
               />
             </div>

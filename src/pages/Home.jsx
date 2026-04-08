@@ -7,7 +7,6 @@ export default function Home() {
   return (
     <div className="home-page">
 
-    
       <section className="hero">
         <div className="hero-left">
           <h1>
@@ -23,7 +22,7 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/signup" className="btn btn-primary">
+            <Link to="/login" className="btn btn-primary">
               Get Started
             </Link>
 
@@ -32,7 +31,6 @@ export default function Home() {
             </Link>
           </div>
 
-         
           <div className="stats">
             <div>
               <h3>120+</h3>
@@ -55,7 +53,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
 
       <section className="section">
         <h2 className="section-title">How It Works</h2>
@@ -86,7 +83,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
 
       {/* POPULAR SKILLS */}
       <section className="section">

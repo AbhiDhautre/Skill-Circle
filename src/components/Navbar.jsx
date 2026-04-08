@@ -1,34 +1,38 @@
 import React, { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 import "../styles/navbar.css";
-import { AuthContext } from "../App"; // ✅ Import context
+import { AuthContext } from "../App";
+import { auth } from "../firebase";
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
-  // ✅ Logout Handler
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut(auth);
     localStorage.removeItem("userName");
     localStorage.removeItem("primarySkill");
-    localStorage.setItem("isLoggedIn", "false");
+    localStorage.removeItem("skillCircleProfile");
+    localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
+    setMenuOpen(false);
+    navigate("/login");
   };
 
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* ---------- Logo ---------- */}
-        <div className="nav-logo">
+        <NavLink to="/" className="nav-logo" onClick={() => setMenuOpen(false)}>
           <img src={logo} alt="Skill Circle" className="nav-logo-image" />
           <div>
             <h2>Skill Circle</h2>
             <p className="tagline">A Peer-to-Peer Skill Exchange</p>
           </div>
-        </div>
+        </NavLink>
 
-        {/* ---------- Hamburger Menu ---------- */}
         <div
           className={`hamburger ${menuOpen ? "active" : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -38,39 +42,37 @@ export default function Navbar() {
           <span></span>
         </div>
 
-        {/* ---------- Navigation Links ---------- */}
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
           <li>
-            <NavLink to="/" end>
+            <NavLink to="/" end onClick={() => setMenuOpen(false)}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/courses">Courses</NavLink>
+            <NavLink to="/courses" onClick={() => setMenuOpen(false)}>Courses</NavLink>
           </li>
           <li>
-            <NavLink to="/community">Community</NavLink>
+            <NavLink to="/community" onClick={() => setMenuOpen(false)}>Community</NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</NavLink>
           </li>
           <li>
-            <NavLink to="/gamification">Gamification</NavLink>
+            <NavLink to="/gamification" onClick={() => setMenuOpen(false)}>Gamification</NavLink>
           </li>
           <li>
-            <NavLink to="/findskills">Find Skills</NavLink>
+            <NavLink to="/findskills" onClick={() => setMenuOpen(false)}>Find Skills</NavLink>
           </li>
 
-          {/* ---------- Conditional Buttons ---------- */}
           {!isLoggedIn ? (
             <>
               <li>
-                <NavLink to="/login" className="login-link">
+                <NavLink to="/login" className="login-link" onClick={() => setMenuOpen(false)}>
                   Login
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/signup" className="signup-btn">
+                <NavLink to="/signup" className="signup-btn" onClick={() => setMenuOpen(false)}>
                   Sign Up
                 </NavLink>
               </li>

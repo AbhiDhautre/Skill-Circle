@@ -123,3 +123,127 @@
     text-align: center;
   }
 }
+
+/* ── Connection Requests Section ─────────────────────── */
+.requests-section {
+  margin-bottom: 32px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.15rem;
+  color: var(--surface-ink);
+  margin-bottom: 16px;
+}
+
+.request-badge {
+  background: var(--primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.request-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  background: rgba(201, 108, 74, 0.06);
+  border: 1px solid rgba(201, 108, 74, 0.2);
+  box-shadow: var(--shadow-card);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.request-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.request-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(201, 108, 74, 0.3);
+}
+
+.request-name {
+  font-weight: 700;
+  color: var(--surface-ink);
+  margin: 0 0 2px;
+}
+
+.request-skill {
+  font-size: 0.83rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.request-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-accept {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--secondary);
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-accept:hover { opacity: 0.85; }
+
+.btn-decline {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.08);
+  color: var(--surface-ink);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-decline:hover { background: rgba(0,0,0,0.14); }
+
+/* Find Skills connect button states */
+.connect-btn.connected {
+  background: rgba(47, 107, 95, 0.12);
+  color: var(--secondary);
+  cursor: default;
+  border: 1px solid var(--secondary);
+}
+
+.connect-btn.pending {
+  background: rgba(201, 108, 74, 0.12);
+  color: var(--primary);
+  cursor: default;
+  border: 1px solid var(--primary);
+}
+

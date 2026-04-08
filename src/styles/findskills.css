@@ -67,4 +67,116 @@
 
 .connect-btn {
   margin-top: 16px;
+  width: 100%;
+}
+
+/* Card with an incoming request glows */
+.skill-card.has-request {
+  border-color: rgba(201, 108, 74, 0.45);
+  background: rgba(201, 108, 74, 0.05);
+  box-shadow: 0 0 0 3px rgba(201, 108, 74, 0.12), var(--shadow-card);
+  animation: pulseCard 2s infinite ease-in-out;
+}
+
+@keyframes pulseCard {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(201, 108, 74, 0.12), var(--shadow-card); }
+  50%       { box-shadow: 0 0 0 6px rgba(201, 108, 74, 0.22), var(--shadow-card); }
+}
+
+.inline-request-actions {
+  margin-top: 14px;
+}
+
+.incoming-label {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 8px;
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+}
+
+.action-row .btn-accept,
+.action-row .btn-decline {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.action-row .btn-accept {
+  background: var(--secondary);
+  color: white;
+}
+.action-row .btn-accept:hover { opacity: 0.85; }
+
+.action-row .btn-decline {
+  background: rgba(0,0,0,0.08);
+  color: var(--surface-ink);
+}
+.action-row .btn-decline:hover { background: rgba(0,0,0,0.14); }
+
+
+/* Pending banner */
+.pending-banner {
+  margin: 0 auto 20px;
+  max-width: 560px;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  background: rgba(201, 108, 74, 0.08);
+  border: 1px solid rgba(201, 108, 74, 0.25);
+  color: var(--primary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ── Skill Exchange Board ────────────────────────────────────────────────────── */
+
+.create-post-card {
+  max-width: 560px;
+  margin: 0 auto 32px;
+  padding: 24px;
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  animation: slideDown 0.3s ease;
+}
+
+.skill-board {
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.board-post-card {
+  padding: 20px;
+  background: rgba(255, 251, 246, 0.8);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(201, 108, 74, 0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.board-post-card .post-content {
+  flex-grow: 1;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
 }

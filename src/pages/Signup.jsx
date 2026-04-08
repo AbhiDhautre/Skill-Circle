@@ -3,29 +3,37 @@ import "../styles/auth.css";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../App";
+import { saveProfile } from "../utils/appState";
 
 export default function Signup() {
   const navigate = useNavigate();
   const { setIsLoggedIn } = useContext(AuthContext);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [enrollmentNumber, setEnrollmentNumber] = useState("");
   const [password, setPassword] = useState("");
   const [skill, setSkill] = useState("");
 
   const handleSignup = async (e) => {
-    e.preventDefault(); // prevents page reload
+    e.preventDefault();
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const dummyEmail = `${enrollmentNumber.trim()}@mitadt.edu`;
+      const userCredential = await createUserWithEmailAndPassword(auth, dummyEmail, password);
 
       await updateProfile(userCredential.user, {
         displayName: name.trim(),
       });
 
-      localStorage.setItem("userName", name.trim());
-      localStorage.setItem("primarySkill", skill.trim());
+      saveProfile({
+        name: name.trim(),
+        enrollmentNumber: enrollmentNumber.trim(),
+        email: dummyEmail,
+        primarySkill: skill.trim(),
+        bio: `Learning and teaching ${skill.trim()} inside the Skill Circle community.`
+      });
+
       localStorage.setItem("isLoggedIn", "true");
 
       setIsLoggedIn(true);
@@ -60,12 +68,12 @@ export default function Signup() {
             </div>
 
             <div className="input-group">
-              <label>Email</label>
+              <label>Enrollment Number</label>
               <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="Enter your enrollment number"
+                value={enrollmentNumber}
+                onChange={(e) => setEnrollmentNumber(e.target.value)}
                 required
               />
             </div>
@@ -98,7 +106,7 @@ export default function Signup() {
           </form>
 
           <p className="switch-text">
-            Already have an account? <a href="/login">Login here</a>
+            Already have an account? <Link to="/login">Login here</Link>
           </p>
         </div>
 
