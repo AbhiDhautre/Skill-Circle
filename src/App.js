@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { onAuthStateChanged } from "firebase/auth";
 import "react-toastify/dist/ReactToastify.css";
+import { Analytics } from "@vercel/analytics/react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -96,6 +97,7 @@ function App() {
           theme="light"
           toastClassName="toast-theme"
         />
+        <Analytics />
       </div>
     </AuthContext.Provider>
   );

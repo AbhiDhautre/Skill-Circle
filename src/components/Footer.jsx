@@ -28,7 +28,7 @@ export default function Footer() {
           <a href="https://www.linkedin.com/" aria-label="LinkedIn">
             <i className="fab fa-linkedin"></i>
           </a>
-          <a href="https://github.com/" aria-label="GitHub">
+          <a href="https://github.com/AbhiDhautre/Skill-Circle.git" aria-label="GitHub">
             <i className="fab fa-github"></i>
           </a>
         </div>
