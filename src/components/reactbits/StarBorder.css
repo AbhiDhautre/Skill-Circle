@@ -1,0 +1,71 @@
+.star-border-container {
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.border-gradient-bottom {
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  top: -100%;
+  left: -100%;
+  z-index: 0;
+  animation: star-movement-bottom 6s linear infinite;
+  opacity: 0.8;
+}
+
+.border-gradient-top {
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  top: -100%;
+  left: -100%;
+  z-index: 0;
+  animation: star-movement-top 6s linear infinite;
+  opacity: 0.8;
+}
+
+.inner-content {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border-radius: 998px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 24px;
+  color: var(--surface-ink);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  backdrop-filter: blur(12px);
+}
+
+.star-border-container:hover .inner-content {
+  background: rgba(139, 92, 246, 0.15);
+  color: #fff;
+}
+
+@keyframes star-movement-bottom {
+  0% {
+    transform: translate(0%, 0%) rotate(0deg);
+  }
+  100% {
+    transform: translate(0%, 0%) rotate(360deg);
+  }
+}
+
+@keyframes star-movement-top {
+  0% {
+    transform: translate(0%, 0%) rotate(180deg);
+  }
+  100% {
+    transform: translate(0%, 0%) rotate(540deg);
+  }
+}

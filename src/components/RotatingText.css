@@ -1,0 +1,22 @@
+.rotating-text-wrapper {
+  display: inline-block;
+  position: relative;
+  min-width: 300px; /* Prevents layout shifting, adjust as necessary */
+  text-align: left;
+}
+
+.rotating-text {
+  display: inline-block;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: opacity, transform;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}

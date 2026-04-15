@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/gamification.css";
 import { subscribeToUser, subscribeToAllUsers, defaultCourses } from "../utils/appState";
 import { auth } from "../firebase";
+import SpotlightCard from "../components/SpotlightCard";
 
 export default function Gamification() {
   const [profile, setProfile] = useState({ name: "" });
@@ -10,7 +11,7 @@ export default function Gamification() {
   const [enrollments, setEnrollments] = useState(defaultCourses.slice(0, 3));
   const [allUsers, setAllUsers] = useState([]);
 
-  // Real-time current user data
+
   useEffect(() => {
     const unsubscribe = subscribeToUser(({ profile, connections, enrollments, xp }) => {
       setProfile(profile);
@@ -21,7 +22,7 @@ export default function Gamification() {
     return () => unsubscribe();
   }, []);
 
-  // Real-time all users for live leaderboard
+  
   useEffect(() => {
     const unsubscribe = subscribeToAllUsers((users) => {
       setAllUsers(users);
@@ -46,7 +47,7 @@ export default function Gamification() {
     { name: "Consistency", icon: "🔥", desc: `${streak}-day engagement streak` },
   ];
 
-  // Build real leaderboard from all Firestore users, sorted by XP
+  
   const leaderboard = allUsers
     .map((u) => ({
       id: u.id,
@@ -55,7 +56,7 @@ export default function Gamification() {
       isYou: u.id === currentUid,
     }))
     .sort((a, b) => b.xp - a.xp)
-    .slice(0, 10); // top 10
+    .slice(0, 10); 
 
   return (
     <div className="gamification-page">
@@ -63,7 +64,7 @@ export default function Gamification() {
       <p className="subtitle">Earn XP, climb levels, and unlock badges by learning and contributing to the Skill Circle community.</p>
 
       <section className="xp-section">
-        <div className="xp-card">
+        <SpotlightCard className="xp-card">
           <p className="muted">Welcome back, {userName}</p>
           <h3>Level {level}</h3>
           <div className="xp-bar">
@@ -71,20 +72,20 @@ export default function Gamification() {
           </div>
           <p>{xp} XP / {nextLevelXP} XP</p>
           <p className="streak">🔥 {streak}-Day Streak</p>
-        </div>
+        </SpotlightCard>
       </section>
 
       <section className="badges-section">
         <h2 className="section-title">Your Badges</h2>
         <div className="badges-grid">
           {badges.map((b, i) => (
-            <div key={i} className="badge-card">
+            <SpotlightCard key={i} className="badge-card">
               <span className="badge-icon">{b.icon}</span>
               <div>
                 <h4>{b.name}</h4>
                 <p>{b.desc}</p>
               </div>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </section>
@@ -93,11 +94,11 @@ export default function Gamification() {
         <h2 className="section-title">Live Leaderboard</h2>
         <div className="leaderboard">
           {leaderboard.length > 0 ? leaderboard.map((u, i) => (
-            <div key={u.id} className={`leader-card ${u.isYou ? "is-you" : ""}`}>
+            <SpotlightCard key={u.id} className={`leader-card ${u.isYou ? "is-you" : ""}`} spotlightColor={u.isYou ? "rgba(244, 63, 94, 0.3)" : "rgba(139, 92, 246, 0.25)"}>
               <span className="rank">#{i + 1}</span>
               <p className="name">{u.name} {u.isYou ? "(You)" : ""}</p>
               <span className="xp">{u.xp} XP</span>
-            </div>
+            </SpotlightCard>
           )) : (
             <p className="muted">Loading leaderboard...</p>
           )}

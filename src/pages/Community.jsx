@@ -2,6 +2,30 @@ import React, { useState, useEffect } from "react";
 import "../styles/community.css";
 import { toast } from "react-toastify";
 import { subscribeToPosts, getProfile, savePost, addXp, defaultPosts } from "../utils/appState";
+import SpotlightCard from "../components/SpotlightCard";
+
+const getRelativeTime = (timestamp) => {
+  if (!timestamp) return "Just now";
+  const now = Date.now();
+  const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  
+  if (diffInSeconds < 60) return "Just now";
+  
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+  
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+  
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+  
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) return `${diffInMonths} month${diffInMonths > 1 ? 's' : ''} ago`;
+  
+  const diffInYears = Math.floor(diffInDays / 365);
+  return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
+};
 
 export default function Community() {
   const [posts, setPosts] = useState(defaultPosts);
@@ -95,24 +119,24 @@ export default function Community() {
       </div>
 
       {showForm && (
-        <form className="create-post-form" onSubmit={handleAddPost}>
+        <SpotlightCard className="create-post-form" spotlightColor="rgba(14, 165, 233, 0.2)">
           <input type="text" name="author" placeholder="Your Name" value={newPost.author} onChange={handleInputChange} required />
           <input type="text" name="title" placeholder="Post Title" value={newPost.title} onChange={handleInputChange} required />
           <textarea name="content" placeholder="Write something..." value={newPost.content} onChange={handleInputChange} required></textarea>
           <input type="text" name="tags" placeholder="Tags (comma separated)" value={newPost.tags} onChange={handleInputChange} />
-          <button type="submit" className="btn btn-primary">Post</button>
-        </form>
+          <button type="button" onClick={handleAddPost} className="btn btn-primary" style={{marginTop: "8px", width: "100%"}}>Post</button>
+        </SpotlightCard>
       )}
 
       <div className="feed">
         {posts.map((post) => (
-          <div key={post.id} className="post-card">
+          <SpotlightCard key={post.id} className="post-card">
             <div className="post-header">
               <div>
                 <h3>{post.title}</h3>
                 <p className="author">By {post.author}</p>
               </div>
-              <span className="time">{post.time}</span>
+              <span className="time">{post.createdAt ? getRelativeTime(post.createdAt) : post.time}</span>
             </div>
 
             <p className="post-content">{post.content}</p>
@@ -148,7 +172,7 @@ export default function Community() {
                 ))}
               </div>
             )}
-          </div>
+          </SpotlightCard>
         ))}
       </div>
     </div>

@@ -8,6 +8,30 @@ import {
   subscribeToSkillPosts, saveSkillPost
 } from "../utils/appState";
 import { auth } from "../firebase";
+import SpotlightCard from "../components/SpotlightCard";
+
+const getRelativeTime = (timestamp) => {
+  if (!timestamp) return "Just now";
+  const now = Date.now();
+  const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  
+  if (diffInSeconds < 60) return "Just now";
+  
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+  
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+  
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+  
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) return `${diffInMonths} month${diffInMonths > 1 ? 's' : ''} ago`;
+  
+  const diffInYears = Math.floor(diffInDays / 365);
+  return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
+};
 
 export default function FindSkills() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -197,7 +221,7 @@ export default function FindSkills() {
 
       {/* Post Creation Form */}
       {showPostForm && (
-        <div className="create-post-card">
+        <SpotlightCard className="create-post-card" spotlightColor="rgba(14, 165, 233, 0.2)">
           <h3 style={{ marginTop: 0, color: "var(--surface-ink)" }}>Ask the community for a connection</h3>
           <textarea
             className="input-surface mb-2"
@@ -223,7 +247,7 @@ export default function FindSkills() {
           >
             {isPosting ? "Posting..." : "Post Request"}
           </button>
-        </div>
+        </SpotlightCard>
       )}
 
       {/* Skill Exchange Board (Live Posts) */}
@@ -232,22 +256,25 @@ export default function FindSkills() {
           <h2 className="section-title">📢 Active Skill Requests</h2>
           <div className="board-grid">
             {skillPosts.map(post => (
-              <div key={post.id} className="board-post-card">
+              <SpotlightCard key={post.id} className="board-post-card">
                 <div className="profile" style={{ marginBottom: "8px" }}>
                   <img src={post.authorAvatar} alt="User" className="avatar" style={{ width: "40px", height: "40px" }} />
                   <div>
                     <h4 style={{ margin: 0, color: "var(--surface-ink)" }}>{post.authorName}</h4>
+                    <span style={{ fontSize: "0.8rem", color: "var(--muted)" }}>
+                      {post.createdAt ? getRelativeTime(post.createdAt) : "Just now"}
+                    </span>
                   </div>
                 </div>
                 <p className="post-content" style={{ margin: "8px 0", fontSize: "0.95rem", lineHeight: 1.5 }}>
                   {post.content}
                 </p>
                 <div className="tag-row" style={{ marginTop: "12px" }}>
-                  <span className="tag" style={{ background: "rgba(201, 108, 74, 0.15)", color: "var(--primary)" }}>
+                  <span className="tag" style={{ background: "rgba(139, 92, 246, 0.15)", color: "var(--primary)" }}>
                     🔍 Looking for: {post.lookingFor}
                   </span>
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
           <hr style={{ margin: "32px 0", border: "none", borderTop: "1px solid var(--line)" }} />
@@ -264,7 +291,7 @@ export default function FindSkills() {
       <div className="skills-grid">
         {filtered.length > 0 ? (
           filtered.map((user) => (
-            <div
+            <SpotlightCard
               key={user.id}
               className={`skill-card ${hasIncomingRequest(user.id) ? "has-request" : ""}`}
             >
@@ -280,7 +307,7 @@ export default function FindSkills() {
                 <p><strong>Looking for:</strong> {user.lookingFor}</p>
               </div>
               {renderActions(user)}
-            </div>
+            </SpotlightCard>
           ))
         ) : (
           <p className="no-results">No matching users found</p>

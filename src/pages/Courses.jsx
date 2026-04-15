@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/courses.css";
 import { toast } from "react-toastify";
 import { enrollInCourse, subscribeToCourses, defaultCourses } from "../utils/appState";
+import SpotlightCard from "../components/SpotlightCard";
 
 export default function Courses() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,7 +41,7 @@ export default function Courses() {
       <div className="courses-grid">
         {filtered.length > 0 ? (
           filtered.map((course) => (
-            <div key={course.id} className="course-card">
+            <SpotlightCard key={course.id} className="course-card">
               <div className="course-header">
                 <h3>{course.title}</h3>
                 <p className="mentor">By {course.mentor}</p>
@@ -69,7 +70,7 @@ export default function Courses() {
               >
                 Enroll Now
               </button>
-            </div>
+            </SpotlightCard>
           ))
         ) : (
           <p className="no-results">{courses.length === 0 ? "Loading courses..." : "No courses found."}</p>

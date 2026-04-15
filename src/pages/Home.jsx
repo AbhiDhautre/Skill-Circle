@@ -2,6 +2,10 @@ import React from "react";
 import "../styles/home.css";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import SpotlightCard from "../components/SpotlightCard";
+import RotatingText from "../components/RotatingText";
+import ShinyText from "../components/reactbits/ShinyText";
+import StarBorder from "../components/reactbits/StarBorder";
 
 export default function Home() {
   return (
@@ -10,10 +14,17 @@ export default function Home() {
       <section className="hero">
         <div className="hero-left">
           <h1>
-            SKILL CIRCLE <br />
-            <span className="highlight">
-              A Peer-to-Peer Skill Exchange
-            </span>
+            <ShinyText text="SKILL CIRCLE" disabled={false} speed={3} /> <br />
+            <RotatingText 
+              phrases={[
+                "A Peer-to-Peer Skill Exchange",
+                "Learn Together, Grow Together",
+                "Level Up Your Knowledge",
+                "Build Your Tech Network"
+              ]}
+              interval={4000}
+              highlightClass="highlight"
+            />
           </h1>
 
           <p>
@@ -22,35 +33,39 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/login" className="btn btn-primary">
-              Get Started
+            <Link to="/login" style={{textDecoration: "none"}}>
+              <StarBorder as="div" color="#8b5cf6" speed="4s" style={{padding: "4px"}}>
+                 <span className="btn btn-primary" style={{margin:0, border:"none"}}>Get Started</span>
+              </StarBorder>
             </Link>
 
-            <Link to="/courses" className="btn btn-outline">
-              Browse Courses
+            <Link to="/courses" style={{textDecoration: "none"}}>
+              <StarBorder as="div" color="#38bdf8" speed="5s" style={{padding: "4px"}}>
+                <span className="btn btn-outline" style={{margin:0, border:"none"}}>Browse Courses</span>
+              </StarBorder>
             </Link>
           </div>
 
           <div className="stats">
-            <div>
+            <SpotlightCard>
               <h3>120+</h3>
               <p>Active Learners</p>
-            </div>
-            <div>
+            </SpotlightCard>
+            <SpotlightCard>
               <h3>80+</h3>
               <p>Skills Shared</p>
-            </div>
-            <div>
+            </SpotlightCard>
+            <SpotlightCard>
               <h3>300+</h3>
               <p>Sessions Done</p>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
 
         <div className="hero-visual">
-          <div className="hero-logo-shell">
+          <SpotlightCard className="hero-logo-shell" spotlightColor="rgba(56, 189, 248, 0.2)">
             <img src={logo} alt="Skill Circle logo" className="hero-logo-image" />
-          </div>
+          </SpotlightCard>
         </div>
       </section>
 
@@ -58,29 +73,29 @@ export default function Home() {
         <h2 className="section-title">How It Works</h2>
 
         <div className="steps-grid">
-          <div className="step-card">
+          <SpotlightCard className="step-card">
             <span className="step-number">01</span>
             <h3>Create Profile</h3>
             <p>
               Add your skills and interests so others can connect with you.
             </p>
-          </div>
+          </SpotlightCard>
 
-          <div className="step-card">
+          <SpotlightCard className="step-card">
             <span className="step-number">02</span>
             <h3>Connect</h3>
             <p>
               Find peers who match your learning goals or can teach you.
             </p>
-          </div>
+          </SpotlightCard>
 
-          <div className="step-card">
+          <SpotlightCard className="step-card">
             <span className="step-number">03</span>
             <h3>Grow</h3>
             <p>
               Learn together, complete challenges, and improve continuously.
             </p>
-          </div>
+          </SpotlightCard>
         </div>
       </section>
 
@@ -89,25 +104,25 @@ export default function Home() {
         <h2 className="section-title">Popular Skills</h2>
 
         <div className="skills-grid">
-          <div className="skill-card">
+          <SpotlightCard className="skill-card">
             <h4>⚛️ React Development</h4>
             <p>Build modern UI applications with React.</p>
-          </div>
+          </SpotlightCard>
 
-          <div className="skill-card">
+          <SpotlightCard className="skill-card">
             <h4>🧠 Data Structures</h4>
             <p>Improve logic and problem-solving skills.</p>
-          </div>
+          </SpotlightCard>
 
-          <div className="skill-card">
+          <SpotlightCard className="skill-card">
             <h4>🎨 Graphic Design</h4>
             <p>Create stunning visuals using Figma.</p>
-          </div>
+          </SpotlightCard>
 
-          <div className="skill-card">
+          <SpotlightCard className="skill-card">
             <h4>🤖 Machine Learning</h4>
             <p>Explore AI models and real-world applications.</p>
-          </div>
+          </SpotlightCard>
         </div>
       </section>
 

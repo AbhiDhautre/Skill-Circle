@@ -7,11 +7,15 @@
 .profile-card,
 .stat-card,
 .course-card,
-.badge-card {
+.badge-card,
+.request-card {
   border-radius: var(--radius-lg);
-  background: rgba(255, 251, 246, 0.76);
+  background: var(--surface);
   border: 1px solid var(--line);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .profile-card {
@@ -31,8 +35,8 @@
   width: 84px;
   height: 84px;
   border-radius: 50%;
-  border: 3px solid rgba(201, 108, 74, 0.28);
-  background: #f8efe5;
+  border: 3px solid rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.1);
   object-fit: cover;
 }
 
@@ -46,10 +50,11 @@
 .tag {
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(47, 107, 95, 0.1);
-  color: var(--secondary);
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: 600;
+  border: 1px solid rgba(14, 165, 233, 0.2);
 }
 
 .stats-grid,
@@ -65,6 +70,12 @@
   padding: 24px;
 }
 
+.stat-card:hover,
+.course-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
 .stat-card h3,
 .course-card h4 {
   margin: 0;
@@ -75,7 +86,8 @@
   margin-top: 10px;
   color: var(--primary);
   font-family: "Space Grotesk", sans-serif;
-  font-size: 2rem;
+  font-size: 2.2rem;
+  text-shadow: 0 0 16px var(--primary-glow);
 }
 
 .enrolled-section,
@@ -89,12 +101,14 @@
   margin: 14px 0 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(47, 107, 95, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .progress {
   height: 100%;
-  background: linear-gradient(135deg, var(--secondary), #4c8d7e);
+  background: linear-gradient(90deg, var(--secondary), #38bdf8);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
 .badges-grid {
@@ -140,7 +154,7 @@
   align-items: center;
   gap: 10px;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--surface-ink);
   margin-bottom: 16px;
 }
@@ -150,8 +164,9 @@
   color: white;
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: 999px;
+  box-shadow: 0 0 10px var(--primary-glow);
 }
 
 .requests-list {
@@ -165,10 +180,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-radius: var(--radius-lg);
-  background: rgba(201, 108, 74, 0.06);
-  border: 1px solid rgba(201, 108, 74, 0.2);
-  box-shadow: var(--shadow-card);
   animation: fadeIn 0.3s ease;
 }
 
@@ -188,17 +199,17 @@
   height: 46px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(201, 108, 74, 0.3);
+  border: 2px solid rgba(139, 92, 246, 0.4);
 }
 
 .request-name {
   font-weight: 700;
   color: var(--surface-ink);
-  margin: 0 0 2px;
+  margin: 0 0 4px;
 }
 
 .request-skill {
-  font-size: 0.83rem;
+  font-size: 0.85rem;
   color: var(--muted);
   margin: 0;
 }
@@ -211,39 +222,39 @@
 .btn-accept {
   padding: 8px 18px;
   border-radius: var(--radius-sm);
-  background: var(--secondary);
+  background: linear-gradient(135deg, var(--success), #34d399);
   color: white;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
-.btn-accept:hover { opacity: 0.85; }
+.btn-accept:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
 
 .btn-decline {
   padding: 8px 18px;
   border-radius: var(--radius-sm);
-  background: rgba(0,0,0,0.08);
-  color: var(--surface-ink);
-  font-weight: 700;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-weight: 600;
+  border: 1px solid var(--line-strong);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
-.btn-decline:hover { background: rgba(0,0,0,0.14); }
+.btn-decline:hover { background: rgba(255, 255, 255, 0.1); color: var(--surface-ink); }
 
 /* Find Skills connect button states */
 .connect-btn.connected {
-  background: rgba(47, 107, 95, 0.12);
-  color: var(--secondary);
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
   cursor: default;
-  border: 1px solid var(--secondary);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .connect-btn.pending {
-  background: rgba(201, 108, 74, 0.12);
-  color: var(--primary);
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
   cursor: default;
-  border: 1px solid var(--primary);
+  border: 1px solid rgba(139, 92, 246, 0.3);
 }
-

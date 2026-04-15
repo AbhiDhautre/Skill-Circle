@@ -1,0 +1,113 @@
+.logo-wall-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--size) / 14);
+  margin: 0 auto;
+  padding: 20px 0 50px 0;
+  width: 100%;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+.logo-wall-marquee {
+  display: flex;
+  overflow: visible;
+  user-select: none;
+  gap: calc(var(--size) / 14);
+}
+
+.logo-wall-track {
+  display: flex;
+  gap: 40px;
+  flex-shrink: 0;
+  min-width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.logo-wall-item {
+  font-size: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color 0.3s ease, transform 0.3s ease;
+  padding: 0 40px;
+  position: relative;
+  cursor: pointer;
+}
+
+.logo-wall-item:hover {
+  color: var(--primary);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.logo-wall-item[data-name]::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-ink);
+  color: var(--surface);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.3s ease, bottom 0.3s ease;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.logo-wall-item[data-name]:hover::after {
+  opacity: 1;
+  bottom: -32px;
+}
+
+.marquee-left .logo-wall-track {
+  animation: scrollLeft var(--duration) linear infinite;
+}
+
+.marquee-right .logo-wall-track {
+  animation: scrollRight var(--duration) linear infinite;
+}
+
+.pause-on-hover:hover .logo-wall-track {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% / 3)); /* Adjust based on track duplicates */
+  }
+}
+
+@keyframes scrollRight {
+  from {
+    transform: translateX(calc(-100% / 3));
+  }
+  to {
+    transform: translateX(0);
+  }
+}

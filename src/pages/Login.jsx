@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { saveProfile } from "../utils/appState";
+import StarBorder from "../components/reactbits/StarBorder";
 import "../styles/auth.css";
 
 export default function Login() {
@@ -79,9 +80,11 @@ export default function Login() {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary full-width">
-              Login
-            </button>
+            <StarBorder as="div" color="#f43f5e" speed="4s" style={{padding: "2px", width: "100%", display: "block"}}>
+              <button type="submit" className="btn btn-primary full-width" style={{margin: 0, border: "none"}}>
+                Login
+              </button>
+            </StarBorder>
           </form>
         </div>
 

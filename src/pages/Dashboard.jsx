@@ -3,6 +3,7 @@ import "../styles/dashboard.css";
 import { auth } from "../firebase";
 import { subscribeToUser, defaultCourses, acceptConnectionRequest, declineConnectionRequest } from "../utils/appState";
 import { toast } from "react-toastify";
+import SpotlightCard from "../components/SpotlightCard";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState({ name: "", primarySkill: "" });
@@ -68,7 +69,7 @@ export default function Dashboard() {
           </h2>
           <div className="requests-list">
             {incomingRequests.map((req, i) => (
-              <div key={i} className="request-card">
+              <SpotlightCard key={i} className="request-card" spotlightColor="rgba(56, 189, 248, 0.25)">
                 <div className="request-info">
                   <img
                     src="https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png"
@@ -84,13 +85,13 @@ export default function Dashboard() {
                   <button className="btn-accept" onClick={() => handleAccept(req)}>✓ Accept</button>
                   <button className="btn-decline" onClick={() => handleDecline(req)}>✕ Decline</button>
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </section>
       )}
 
-      <section className="profile-card">
+      <SpotlightCard className="profile-card">
         <img src={user.avatar} alt="User" className="avatar" />
         <div>
           <h2>{user.name}</h2>
@@ -101,35 +102,35 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-      </section>
+      </SpotlightCard>
 
       <section className="stats-grid">
-        <div className="stat-card">
+        <SpotlightCard className="stat-card">
           <h3>Courses Completed</h3>
           <p className="stat-num">{enrolledCourses.filter((c) => c.progress >= 100).length}</p>
-        </div>
-        <div className="stat-card">
+        </SpotlightCard>
+        <SpotlightCard className="stat-card">
           <h3>Peer Connections</h3>
           <p className="stat-num">{connections.length}</p>
-        </div>
-        <div className="stat-card">
+        </SpotlightCard>
+        <SpotlightCard className="stat-card">
           <h3>Total XP</h3>
           <p className="stat-num">{user.xp}</p>
-        </div>
+        </SpotlightCard>
       </section>
 
       <section className="enrolled-section">
         <h2 className="section-title">Your Enrolled Courses</h2>
         <div className="enrolled-grid">
           {enrolledCourses.map((c, i) => (
-            <div key={i} className="course-card">
+            <SpotlightCard key={i} className="course-card">
               <h4>{c.title}</h4>
               <p className="muted">with {c.mentor}</p>
               <div className="progress-bar">
                 <div className="progress" style={{ width: `${c.progress}%` }}></div>
               </div>
               <p className="muted">{c.progress}% completed</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </section>
@@ -138,10 +139,10 @@ export default function Dashboard() {
         <h2 className="section-title">Achievements</h2>
         <div className="badges-grid">
           {user.badges.map((b, i) => (
-            <div key={i} className="badge-card">
+            <SpotlightCard key={i} className="badge-card">
               <span className="badge-icon">{b.icon}</span>
               <p>{b.name}</p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </section>
