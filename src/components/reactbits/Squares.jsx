@@ -60,16 +60,7 @@ const Squares = ({ direction = "right", speed = 1, borderColor = "#999", squareS
   }, [direction, speed, borderColor, squareSize]);
 
   // Handle hover effect dynamically
-  const handleMouseMove = (e) => {
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const gridX = Math.floor(x / squareSize) * squareSize;
-    const gridY = Math.floor(y / squareSize) * squareSize;
-
-    const ctx = canvas.getContext("2d");
+  const handleMouseMove = () => {
     // We don't want to clear the whole canvas here, because it messes with the animation loop
     // But doing FillRect repeatedly will color it permanently.
     // Instead we can use a CSS radial mask over the whole component for a spotlight, OR just rely on the pure animated grid.
