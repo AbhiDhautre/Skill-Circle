@@ -33,7 +33,7 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/login" style={{textDecoration: "none"}}>
+            <Link to="/dashboard" style={{textDecoration: "none"}}>
               <StarBorder as="div" color="#8b5cf6" speed="4s" style={{padding: "4px"}}>
                  <span className="btn btn-primary" style={{margin:0, border:"none"}}>Get Started</span>
               </StarBorder>
@@ -96,6 +96,34 @@ export default function Home() {
               Learn together, complete challenges, and improve continuously.
             </p>
           </SpotlightCard>
+        </div>
+      </section>
+
+      {/* SKILL DATASET FORM */}
+      <section className="section">
+        <h2 className="section-title">📋 Share Your Skills</h2>
+        <p className="section-subtitle">Help us build a stronger community — fill in your skills and we'll match you with the right peers.</p>
+        
+        <div className="form-showcase-container">
+          <div className="form-embed-wrapper">
+            <div className="window-header">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
+              <div className="window-title">Skill Circle Application Form</div>
+            </div>
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLScORoErOcwqP9qUJgNUxmSuWx9l_TCmwKwjh3rmKJlc9l94Iw/viewform?embedded=true"
+              width="100%"
+              className="form-embed"
+              title="Skill Circle Student Skills Form"
+              frameBorder="0"
+              marginHeight="0"
+              marginWidth="0"
+            >
+              Loading…
+            </iframe>
+          </div>
         </div>
       </section>
 
