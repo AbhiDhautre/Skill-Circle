@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import SpotlightCard from "../components/SpotlightCard";
-import { getCourses, defaultCourses } from "../utils/appState";
+import { defaultCourses } from "../utils/appState";
 import "../styles/courseroom.css";
 
 export default function CourseRoom() {
