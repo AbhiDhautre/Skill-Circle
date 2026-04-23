@@ -8,11 +8,16 @@ import {
 // ─── Static Data ────────────────────────────────────────────────────────────
 
 export const defaultCourses = [
-  { id: 1, title: "React Frontend Development", mentor: "Aisha Sharma", duration: "6 weeks", tags: ["Frontend", "JavaScript", "React"], progress: 75 },
-  { id: 2, title: "Data Structures & Algorithms", mentor: "Rohit Mehta", duration: "8 weeks", tags: ["C++", "Logic", "DSA"], progress: 25 },
-  { id: 3, title: "UI/UX Design Essentials", mentor: "Nina Patel", duration: "4 weeks", tags: ["Figma", "Design Thinking"], progress: 100 },
-  { id: 4, title: "Machine Learning with Python", mentor: "Deep Verma", duration: "10 weeks", tags: ["AI", "Python", "ML"], progress: 40 },
-  { id: 5, title: "Full Stack with Node.js", mentor: "Aarav Nair", duration: "12 weeks", tags: ["Backend", "Node", "MongoDB"], progress: 15 }
+  { id: 1, title: "React Frontend Development", mentor: "Aisha Sharma", duration: "6 weeks", tags: ["Frontend", "JavaScript", "React"], progress: 75, videoId: "bMknfKXIFA8" },
+  { id: 2, title: "Data Structures & Algorithms", mentor: "Rohit Mehta", duration: "8 weeks", tags: ["C++", "Logic", "DSA"], progress: 25, videoId: "8hly31xKli0" },
+  { id: 3, title: "UI/UX Design Essentials", mentor: "Nina Patel", duration: "4 weeks", tags: ["Figma", "Design Thinking"], progress: 100, videoId: "c9Wg6Cb_YlU" },
+  { id: 4, title: "Machine Learning with Python", mentor: "Deep Verma", duration: "10 weeks", tags: ["AI", "Python", "ML"], progress: 40, videoId: "7eh4d6sabA0" },
+  { id: 5, title: "Full Stack with Node.js", mentor: "Aarav Nair", duration: "12 weeks", tags: ["Backend", "Node", "MongoDB"], progress: 15, videoId: "Oe421EPjeEQ" },
+  { id: 6, title: "Critical Thinking and Problem Solving", mentor: "LinkedIn Learning", duration: "1.5 hours", tags: ["Soft Skills", "Logic", "Free"], progress: 0, url: "https://www.linkedin.com/learning/critical-thinking-and-problem-solving" },
+  { id: 7, title: "Communication Foundations", mentor: "LinkedIn Learning", duration: "2 hours", tags: ["Communication", "Soft Skills", "Free"], progress: 0, url: "https://www.linkedin.com/learning/communication-foundations" },
+  { id: 8, title: "Time Management Fundamentals", mentor: "LinkedIn Learning", duration: "1.5 hours", tags: ["Productivity", "Soft Skills", "Free"], progress: 0, url: "https://www.linkedin.com/learning/time-management-fundamentals" },
+  { id: 9, title: "Git Essential Training: The Basics", mentor: "LinkedIn Learning", duration: "2 hours", tags: ["Git", "Version Control", "Free"], progress: 0, url: "https://www.linkedin.com/learning/git-essential-training-the-basics" },
+  { id: 10, title: "Python for Beginners", mentor: "FreeCodeCamp", duration: "4 hours", tags: ["Python", "Programming", "Free"], progress: 0, videoId: "rfscVS0vtbw", url: "https://www.freecodecamp.org/learn/scientific-computing-with-python/" }
 ];
 
 export const defaultPosts = [
@@ -22,11 +27,35 @@ export const defaultPosts = [
 ];
 
 export const suggestedPeers = [
-  { id: 1, name: "Aarav Nair", skill: "React JS", role: "Frontend Developer", lookingFor: "UI/UX Designer", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png" },
-  { id: 2, name: "Nina Patel", skill: "Figma", role: "UI/UX Designer", lookingFor: "React Developer", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png" },
-  { id: 3, name: "Rohit Mehta", skill: "Machine Learning", role: "Data Scientist", lookingFor: "Python Learner", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png" },
-  { id: 4, name: "Aisha Sharma", skill: "Java", role: "Backend Developer", lookingFor: "Frontend Partner", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png" },
-  { id: 5, name: "Deep Verma", skill: "Python", role: "AI Enthusiast", lookingFor: "Data Analyst", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png" }
+  { id: 1, name: "Atharva Kanchan", skill: "Python, Java", role: "Intermediate CS", lookingFor: "AWS", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 2, name: "Mustafa Bhewala", skill: "JavaScript", role: "Intermediate Smad", lookingFor: "Web Development", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 3, name: "Mitanshu Sarode", skill: "Data Analytics", role: "Beginner SMAD", lookingFor: "Data Analytics", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 4, name: "Aditya Dilip Gavhane", skill: "Python, Java, SQL, Langchain, RAG", role: "Intermediate CSE", lookingFor: "Java", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 5, name: "Namrata Bade", skill: "SQL, Tableau, Python, C++", role: "Beginner ECE", lookingFor: "DSA", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 6, name: "Aryan Kanchan", skill: "Backend, AI", role: "Intermediate CSE", lookingFor: "Cloud Services", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 7, name: "Aditya Vijay Madane", skill: "Cloud, Big Data Analysis", role: "Intermediate CSE", lookingFor: "Python", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 8, name: "Tejaswini Bhujbal", skill: "Python, Java", role: "Intermediate Mitcom", lookingFor: "SQL", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 9, name: "Manasi Sanjay Kalbhor", skill: "Python, Machine Learning", role: "Beginner ECE", lookingFor: "Machine Learning and AI", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 10, name: "Anuj Ganesh Kanchan", skill: "Java, Web Development, AI/ML, SQL", role: "Intermediate AIA", lookingFor: "Java, Backend", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 11, name: "Samruddhi Chavan", skill: "Python", role: "Intermediate ECO", lookingFor: "DSA", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 12, name: "Joel Joseph", skill: "CAD, Coding, AI", role: "Beginner SOES", lookingFor: "CAD, Generative AI", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 13, name: "Gurneet Kaur Juneja", skill: "Web Development, App Development", role: "Intermediate IT", lookingFor: "React Native, Backend", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 14, name: "Aditi Chitnis", skill: "IAM, Cybersecurity", role: "Intermediate IT", lookingFor: "Cloud Security", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 15, name: "Mahima Kisan Kela", skill: "C++, Python, Java, JavaScript, Database", role: "Intermediate IT", lookingFor: "Web Development", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 16, name: "Tanishka Uttarkar", skill: "Python, AI/ML", role: "Intermediate CSE", lookingFor: "Artificial Intelligence", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 1850 },
+  { id: 17, name: "Mrunal Bharati", skill: "AutoCAD, SketchUp", role: "Advanced Architecture", lookingFor: "Architecture Design", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 18, name: "Shravani Ghongde", skill: "Java", role: "Advanced IT", lookingFor: "Advanced Java", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 19, name: "Aarya Thengne", skill: "HTML/CSS, JavaScript, Python, SQL, ML", role: "Intermediate IT", lookingFor: "AI/ML, Cybersecurity", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 20, name: "Vedashree Kulkarni", skill: "Python, Java, C++, React.js, Node.js", role: "Intermediate CS", lookingFor: "Full Stack Development", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 21, name: "Santosh Nimbalkar", skill: "Management", role: "Intermediate AIA", lookingFor: "AWS", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 22, name: "Pravin Ranmale", skill: "Python", role: "Intermediate IT", lookingFor: "Machine Learning", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 23, name: "Vaishnavi Mojad", skill: "Python", role: "Intermediate IT", lookingFor: "Machine Learning", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 24, name: "Khyati Paruchuri", skill: "Python, Java, ML, DL", role: "Advanced CSE", lookingFor: "C++", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 25, name: "Varad Vikas Mandhare", skill: "C++, Cybersecurity", role: "Beginner E&TC", lookingFor: "Docker", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0},
+  { id: 26, name: "Varad Vikas Mandhare", skill: "Cybersecurity", role: "Intermediate CS", lookingFor: "UI/UX Design", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 27, name: "Divya Shahaji Nagare", skill: "Data Entry", role: "Beginner BBA", lookingFor: "Digital Marketing", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 28, name: "Kedar Pradip Kulkarni", skill: "Web Development", role: "Intermediate IT", lookingFor: "AI", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0},
+  { id: 29, name: "Sayali Ingole", skill: "Data Analytics", role: "Intermediate CSE", lookingFor: "General", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 }
 ];
 
 // In-memory cache for profile
@@ -48,7 +77,7 @@ export function subscribeToPosts(callback) {
       q,
       async (snapshot) => {
         const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        
+
         if (posts.length === 0 && !hasSeededPosts) {
           // Seed default posts into Firestore ONCE so all users see them
           hasSeededPosts = true;
@@ -75,7 +104,7 @@ export function subscribeToPosts(callback) {
   } catch (err) {
     console.warn("subscribeToPosts setup error:", err.message);
     callback(defaultPosts);
-    return () => {};
+    return () => { };
   }
 }
 
@@ -87,7 +116,7 @@ export function subscribeToPosts(callback) {
 export function subscribeToUser(callback) {
   if (!auth.currentUser) {
     callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 1250 });
-    return () => {};
+    return () => { };
   }
 
   try {
@@ -102,23 +131,23 @@ export function subscribeToUser(callback) {
             profile: localProfileCache,
             enrollments: data.enrollments?.length ? data.enrollments : defaultCourses.slice(0, 3),
             connections: data.connections || [],
-            xp: data.xp ?? 1250,
+            xp: data.xp ?? 0,
             incomingRequests: data.incomingRequests || []
           });
         } else {
-          callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 1250, incomingRequests: [] });
+          callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 0, incomingRequests: [] });
         }
       },
       (error) => {
         console.warn("Real-time user listener error:", error.message);
-        callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 1250, incomingRequests: [] });
+        callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 0, incomingRequests: [] });
       }
     );
     return unsubscribe;
   } catch (err) {
     console.warn("subscribeToUser setup error:", err.message);
-    callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 1250 });
-    return () => {};
+    callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 0 });
+    return () => { };
   }
 }
 
@@ -139,13 +168,14 @@ export function subscribeToAllUsers(callback) {
             name: data.profile?.name || "Skill Circle Learner",
             xp: data.xp ?? 0,
             skill: data.profile?.primarySkill || "General",
-            role: "Student",
-            lookingFor: "Collaboration",
+            role: data.role || "Student",
+            lookingFor: data.lookingFor || "Collaboration",
             avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png",
             enrollmentNumber: data.profile?.enrollmentNumber || ""
           };
         });
-        callback(users.length > 0 ? users : suggestedPeers);
+        // Merge live Firebase users with our large list of suggested peers from the CSV
+        callback([...users, ...suggestedPeers]);
       },
       (error) => {
         console.warn("Real-time all-users listener error:", error.message);
@@ -156,50 +186,14 @@ export function subscribeToAllUsers(callback) {
   } catch (err) {
     console.warn("subscribeToAllUsers setup error:", err.message);
     callback(suggestedPeers);
-    return () => {};
+    return () => { };
   }
 }
 
-let hasSeededCourses = false;
-
-/**
- * Subscribes to global courses from Firestore in real-time.
- * Seeds default courses if none exist yet.
- * Returns an unsubscribe function.
- */
 export function subscribeToCourses(callback) {
-  try {
-    const q = collection(db, "courses");
-    const unsubscribe = onSnapshot(
-      q,
-      async (snapshot) => {
-        const courses = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        if (courses.length === 0 && !hasSeededCourses) {
-          hasSeededCourses = true;
-          try {
-            for (const c of defaultCourses) {
-              await addDoc(collection(db, "courses"), { ...c });
-            }
-            // onSnapshot fires again with seeded courses
-          } catch (seedErr) {
-            console.warn("Could not seed courses:", seedErr.message);
-            callback(defaultCourses);
-          }
-        } else {
-          callback(courses.length > 0 ? courses : defaultCourses);
-        }
-      },
-      (error) => {
-        console.warn("Real-time courses listener error:", error.message);
-        callback(defaultCourses);
-      }
-    );
-    return unsubscribe;
-  } catch (err) {
-    console.warn("subscribeToCourses setup error:", err.message);
-    callback(defaultCourses);
-    return () => {};
-  }
+  // Bypassing Firestore for the static course catalog for instant loading & preventing duplicates
+  callback(defaultCourses);
+  return () => { };
 }
 
 // ─── Profile ─────────────────────────────────────────────────────────────────
@@ -225,7 +219,7 @@ export async function saveProfile(profile) {
     const docRef = doc(db, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
-      await setDoc(docRef, { profile: localProfileCache, enrollments: [], connections: [], xp: 1250 });
+      await setDoc(docRef, { profile: localProfileCache, enrollments: [], connections: [], xp: 0 });
     } else {
       await updateDoc(docRef, { profile: localProfileCache });
     }
@@ -285,6 +279,18 @@ export async function enrollInCourse(course) {
   await saveEnrollments(updated);
   await addXp(120);
   return { added: true, enrollments: updated };
+}
+
+export async function completeCourse(courseId) {
+  const enrollments = await getEnrollments();
+  const courseIndex = enrollments.findIndex((item) => item.id === courseId);
+  if (courseIndex === -1 || enrollments[courseIndex].progress >= 100) {
+    return { completed: false, enrollments };
+  }
+  enrollments[courseIndex].progress = 100;
+  await saveEnrollments(enrollments);
+  await addXp(150);
+  return { completed: true, enrollments };
 }
 
 // ─── Connections ──────────────────────────────────────────────────────────────
@@ -413,7 +419,7 @@ export async function savePost(post) {
 // ─── XP ───────────────────────────────────────────────────────────────────────
 
 export async function getXp() {
-  if (!auth.currentUser) return 1250;
+  if (!auth.currentUser) return 0;
   try {
     const docRef = doc(db, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
@@ -421,11 +427,11 @@ export async function getXp() {
   } catch (error) {
     console.warn("Firestore error in getXp:", error.message);
   }
-  return 1250;
+  return 0;
 }
 
 export async function addXp(amount) {
-  if (!auth.currentUser) return 1250;
+  if (!auth.currentUser) return 0;
   const currentXp = await getXp();
   const nextXp = currentXp + amount;
   try {
@@ -480,7 +486,7 @@ export function subscribeToSkillPosts(callback) {
   } catch (err) {
     console.warn("subscribeToSkillPosts setup error:", err.message);
     callback([]);
-    return () => {};
+    return () => { };
   }
 }
 

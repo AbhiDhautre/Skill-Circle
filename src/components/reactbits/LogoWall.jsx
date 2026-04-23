@@ -34,7 +34,7 @@ const LogoWall = ({
               </div>
             );
           })}
-          {/* Duplicate track for seamless infinite scroll */}
+          
           {items.map((item, idx) => {
             const isObj = typeof item === 'object' && item !== null && !React.isValidElement(item);
             const iconClass = isObj ? item.icon : item;

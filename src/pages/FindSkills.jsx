@@ -34,7 +34,9 @@ const getRelativeTime = (timestamp) => {
 };
 
 export default function FindSkills() {
+  const CLUSTERS = ["All", "Web Development", "App Development", "AI/ML", "UI/UX", "Backend", "Data Science"];
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCluster, setSelectedCluster] = useState("All");
   const [allUsers, setAllUsers] = useState(suggestedPeers);
   const [myProfile, setMyProfile] = useState({});
   const [myConnections, setMyConnections] = useState([]);
@@ -64,7 +66,12 @@ export default function FindSkills() {
     const unsubscribe = subscribeToAllUsers((users) => {
       const currentUid = auth.currentUser?.uid;
       const others = users.filter((u) => u.id !== currentUid);
-      setAllUsers(others.length > 0 ? others : suggestedPeers);
+      
+      // Explicitly guarantee suggestedPeers are merged, avoiding duplicates by ID
+      const othersIds = new Set(others.map(u => u.id));
+      const missingPeers = suggestedPeers.filter(p => !othersIds.has(p.id));
+      
+      setAllUsers([...others, ...missingPeers]);
     });
     return () => unsubscribe();
   }, []);
@@ -123,12 +130,30 @@ export default function FindSkills() {
     toast.info(`Request from ${request.fromName} declined.`);
   };
 
-  const filtered = allUsers.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.skill.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filtered = allUsers.filter((user) => {
+    const term = searchQuery.toLowerCase();
+    const nameStr = (user.name || "").toLowerCase();
+    const skillStr = (user.skill || "").toLowerCase();
+    const roleStr = (user.role || "").toLowerCase();
+
+    const matchesSearch = nameStr.includes(term) ||
+                          skillStr.includes(term) ||
+                          roleStr.includes(term);
+    
+    let matchesCluster = true;
+    if (selectedCluster !== "All") {
+      const clusterL = selectedCluster.toLowerCase();
+      matchesCluster = skillStr.includes(clusterL) || roleStr.includes(clusterL);
+      
+      if (selectedCluster === "Web Development") {
+        matchesCluster = matchesCluster || skillStr.includes("react") || skillStr.includes("frontend") || roleStr.includes("frontend");
+      } else if (selectedCluster === "AI/ML" || selectedCluster === "Data Science") {
+        matchesCluster = matchesCluster || skillStr.includes("python") || skillStr.includes("machine learning") || roleStr.includes("data");
+      }
+    }
+    
+    return matchesSearch && matchesCluster;
+  }).sort((a, b) => (b.xp || 0) - (a.xp || 0));
 
   const handleCreatePost = async () => {
     if (!auth.currentUser) {
@@ -210,6 +235,14 @@ export default function FindSkills() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        <select 
+          className="cluster-select input-surface" 
+          value={selectedCluster} 
+          onChange={(e) => setSelectedCluster(e.target.value)}
+          style={{ marginLeft: "14px", padding: "10px 16px", borderRadius: "12px", minWidth: "160px", background: "var(--surface)", color: "var(--surface-ink)", border: "1px solid var(--line)", outline: "none" }}
+        >
+          {CLUSTERS.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
         <button 
           className="btn btn-primary ml-10" 
           onClick={() => setShowPostForm(!showPostForm)}
@@ -288,6 +321,11 @@ export default function FindSkills() {
         </div>
       )}
 
+      <div className="skills-grid-header" style={{ textAlign: "left", marginBottom: "20px", color: "var(--muted)", fontWeight: "500", paddingLeft: "4px" }}>
+        {filtered.length > 0 && (
+          <p>Showing <strong>{filtered.length}</strong> {searchQuery ? `result${filtered.length !== 1 ? "s" : ""} for "${searchQuery}"` : selectedCluster !== "All" ? `${selectedCluster} profile${filtered.length !== 1 ? "s" : ""}` : `peer${filtered.length !== 1 ? "s" : ""}`} sorted by Top Ranking</p>
+        )}
+      </div>
       <div className="skills-grid">
         {filtered.length > 0 ? (
           filtered.map((user) => (
@@ -305,6 +343,7 @@ export default function FindSkills() {
               <div className="info">
                 <p><strong>Skill:</strong> {user.skill}</p>
                 <p><strong>Looking for:</strong> {user.lookingFor}</p>
+                <p><strong>Ranking:</strong> ⭐ {user.xp || 0} XP</p>
               </div>
               {renderActions(user)}
             </SpotlightCard>

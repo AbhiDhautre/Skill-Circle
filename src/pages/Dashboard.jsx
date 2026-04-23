@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../styles/dashboard.css";
 import { auth } from "../firebase";
-import { subscribeToUser, defaultCourses, acceptConnectionRequest, declineConnectionRequest } from "../utils/appState";
+import { subscribeToUser, acceptConnectionRequest, declineConnectionRequest } from "../utils/appState";
 import { toast } from "react-toastify";
 import SpotlightCard from "../components/SpotlightCard";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState({ name: "", primarySkill: "" });
-  const [enrolledCourses, setEnrolledCourses] = useState(defaultCourses.slice(0, 3));
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [connections, setConnections] = useState([]);
   const [xp, setXp] = useState(1250);
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -33,6 +33,8 @@ export default function Dashboard() {
     await declineConnectionRequest(request);
     toast.info(`Connection request from ${request.fromName} declined.`);
   };
+
+
 
   const authName = auth.currentUser?.displayName;
   const emailName = auth.currentUser?.email?.split("@")[0];
@@ -119,21 +121,7 @@ export default function Dashboard() {
         </SpotlightCard>
       </section>
 
-      <section className="enrolled-section">
-        <h2 className="section-title">Your Enrolled Courses</h2>
-        <div className="enrolled-grid">
-          {enrolledCourses.map((c, i) => (
-            <SpotlightCard key={i} className="course-card">
-              <h4>{c.title}</h4>
-              <p className="muted">with {c.mentor}</p>
-              <div className="progress-bar">
-                <div className="progress" style={{ width: `${c.progress}%` }}></div>
-              </div>
-              <p className="muted">{c.progress}% completed</p>
-            </SpotlightCard>
-          ))}
-        </div>
-      </section>
+
 
       <section className="badges-section">
         <h2 className="section-title">Achievements</h2>

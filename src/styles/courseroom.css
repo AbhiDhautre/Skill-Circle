@@ -1,0 +1,147 @@
+.courseroom-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  color: var(--surface-ink);
+}
+
+/* ── Header ─────────────────────────── */
+.courseroom-header {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s;
+}
+
+.back-btn:hover {
+  opacity: 0.7;
+}
+
+.courseroom-header h1 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  margin: 0 0 0.4rem 0;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--surface-ink);
+}
+
+.courseroom-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.courseroom-meta .dot {
+  opacity: 0.4;
+}
+
+/* ── Video ───────────────────────────── */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  margin-bottom: 2rem;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ── External card ───────────────────── */
+.external-card {
+  text-align: center;
+  padding: 4rem 3rem !important;
+  margin-bottom: 2rem;
+}
+
+.external-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.external-card h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem;
+  color: var(--surface-ink);
+}
+
+.external-card p {
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.external-card strong {
+  color: var(--surface-ink);
+}
+
+.launch-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+}
+
+.launch-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(56, 189, 248, 0.45);
+}
+
+/* ── Overview ────────────────────────── */
+.courseroom-overview {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+}
+
+.courseroom-overview h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: var(--surface-ink);
+}
+
+.courseroom-overview p {
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.courseroom-overview strong {
+  color: var(--surface-ink);
+}

@@ -17,6 +17,7 @@ import Gamification from "./pages/Gamification";
 import FindSkills from "./pages/FindSkills";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import CourseRoom from "./pages/CourseRoom";
 import { auth } from "./firebase";
 import { clearSessionState, syncProfileFromAuth } from "./utils/appState";
 import Squares from "./components/reactbits/Squares";
@@ -86,6 +87,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <FindSkills />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/room/:id"
+                element={
+                  <ProtectedRoute>
+                    <CourseRoom />
                   </ProtectedRoute>
                 }
               />
