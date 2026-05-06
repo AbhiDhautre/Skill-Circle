@@ -1,13 +1,15 @@
 .gamification-page {
   max-width: 1150px;
   margin: 0 auto;
-  padding: 14px 0 40px;
+  padding: 14px 0 48px;
   text-align: center;
 }
 
 .subtitle {
   margin: 10px auto 40px;
-  max-width: 640px;
+  max-width: 600px;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
 .xp-section {
@@ -22,40 +24,61 @@
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .xp-card {
-  width: min(100%, 560px);
-  padding: 32px;
+  width: min(100%, 540px);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
 }
 
-.xp-card h3,
-.badge-card h4,
-.rank {
+.xp-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124,58,237,0.7), transparent);
+}
+
+.xp-card h3 {
   color: var(--surface-ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 8px 0 0;
 }
 
 .xp-bar {
-  height: 12px;
-  margin: 16px 0 12px;
+  height: 8px;
+  margin: 20px 0 14px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.05);
 }
 
 .xp-progress {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--primary));
-  box-shadow: 0 0 12px var(--primary-glow);
+  background: linear-gradient(90deg, var(--accent), var(--primary), var(--cyan));
+  background-size: 200% auto;
+  animation: shimmer-bar 3s linear infinite;
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(124,58,237,0.5);
+}
+
+@keyframes shimmer-bar {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .streak {
-  color: #f43f5e;
+  color: #fb923c;
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
+  font-size: 1rem;
+  margin-top: 8px;
 }
 
 .badges-section,
@@ -65,8 +88,8 @@
 
 .badges-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
   margin-top: 24px;
 }
 
@@ -74,62 +97,80 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 24px;
+  padding: 22px 24px;
   text-align: left;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .badge-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(139, 92, 246, 0.3);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(124,58,237,0.3);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 0 20px rgba(124,58,237,0.1);
 }
 
 .badge-icon {
-  font-size: 2.5rem;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+  font-size: 2.2rem;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.15));
+  flex-shrink: 0;
+}
+
+.badge-card h4 {
+  margin: 0 0 4px;
+  color: var(--surface-ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .badge-card p {
+  margin: 0;
   color: var(--muted);
+  font-size: 0.85rem;
   line-height: 1.5;
 }
 
 .leaderboard {
   display: grid;
-  gap: 16px;
-  width: min(100%, 640px);
+  gap: 10px;
+  width: min(100%, 600px);
   margin: 24px auto 0;
 }
 
 .leader-card {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 44px 1fr auto;
   gap: 16px;
   align-items: center;
-  padding: 16px 24px;
-  transition: transform 0.2s ease, background 0.2s ease;
+  padding: 14px 22px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .leader-card:hover {
-  transform: scale(1.02);
-  background: rgba(30, 38, 56, 0.7);
+  transform: scale(1.01);
+  border-color: rgba(124,58,237,0.2);
 }
 
 .leader-card.is-you {
   border-color: var(--primary);
-  background: rgba(139, 92, 246, 0.1);
-  box-shadow: 0 0 0 1px var(--primary), 0 8px 32px var(--primary-glow);
+  background: rgba(124,58,237,0.08);
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.3), 0 8px 30px rgba(124,58,237,0.15);
 }
 
 .leader-card.is-you .rank,
 .leader-card.is-you .name,
 .leader-card.is-you .xp {
-  color: #fff;
+  color: var(--surface-ink);
   font-weight: 700;
 }
 
-.name,
-.xp {
+.rank {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
   color: var(--muted);
 }
+
+.name { color: var(--text); font-size: 0.95rem; text-align: left; }
+.xp { color: var(--primary-light); font-weight: 700; font-size: 0.9rem; }

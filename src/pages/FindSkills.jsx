@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
   subscribeToAllUsers, subscribeToUser,
   sendConnectionRequest, acceptConnectionRequest, declineConnectionRequest,
-  connectWithPeer, suggestedPeers,
+  connectWithPeer,
   subscribeToSkillPosts, saveSkillPost
 } from "../utils/appState";
 import { auth } from "../firebase";
@@ -37,7 +37,7 @@ export default function FindSkills() {
   const CLUSTERS = ["All", "Web Development", "App Development", "AI/ML", "UI/UX", "Backend", "Data Science"];
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCluster, setSelectedCluster] = useState("All");
-  const [allUsers, setAllUsers] = useState(suggestedPeers);
+  const [allUsers, setAllUsers] = useState([]);
   const [myProfile, setMyProfile] = useState({});
   const [myConnections, setMyConnections] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -66,12 +66,7 @@ export default function FindSkills() {
     const unsubscribe = subscribeToAllUsers((users) => {
       const currentUid = auth.currentUser?.uid;
       const others = users.filter((u) => u.id !== currentUid);
-      
-      // Explicitly guarantee suggestedPeers are merged, avoiding duplicates by ID
-      const othersIds = new Set(others.map(u => u.id));
-      const missingPeers = suggestedPeers.filter(p => !othersIds.has(p.id));
-      
-      setAllUsers([...others, ...missingPeers]);
+      setAllUsers(others);
     });
     return () => unsubscribe();
   }, []);
@@ -302,10 +297,22 @@ export default function FindSkills() {
                 <p className="post-content" style={{ margin: "8px 0", fontSize: "0.95rem", lineHeight: 1.5 }}>
                   {post.content}
                 </p>
-                <div className="tag-row" style={{ marginTop: "12px" }}>
-                  <span className="tag" style={{ background: "rgba(139, 92, 246, 0.15)", color: "var(--primary)" }}>
+                <div className="tag-row" style={{ marginTop: "12px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                  <span className="tag" style={{ background: "rgba(139, 92, 246, 0.15)", color: "var(--primary)", margin: 0 }}>
                     🔍 Looking for: {post.lookingFor}
                   </span>
+                  {auth.currentUser?.uid !== post.authorUid && (
+                    <div className="post-connect-wrapper" style={{ flexShrink: 0, minWidth: "120px" }}>
+                      {renderActions({
+                        id: post.authorUid,
+                        name: post.authorName,
+                        skill: "General",
+                        role: "Student",
+                        lookingFor: post.lookingFor,
+                        avatar: post.authorAvatar
+                      })}
+                    </div>
+                  )}
                 </div>
               </SpotlightCard>
             ))}

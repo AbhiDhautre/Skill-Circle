@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import "./Squares.css";
 
-const Squares = ({ direction = "right", speed = 1, borderColor = "#999", squareSize = 40, hoverFillColor = "#222" }) => {
+const Squares = ({ direction = "right", speed = 1, borderColor = "#999", squareSize = 40 }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -59,17 +59,9 @@ const Squares = ({ direction = "right", speed = 1, borderColor = "#999", squareS
     };
   }, [direction, speed, borderColor, squareSize]);
 
-  // Handle hover effect dynamically
-  const handleMouseMove = () => {
-    // We don't want to clear the whole canvas here, because it messes with the animation loop
-    // But doing FillRect repeatedly will color it permanently.
-    // Instead we can use a CSS radial mask over the whole component for a spotlight, OR just rely on the pure animated grid.
-    // ReactBits "Squares" has hover FillColor. To perfectly emulate it in zero-dependency, we can apply a radial mask gradient on the background container that follows the mouse!
-  };
-
   return (
     <div className="reactbits-squares-container">
-      <canvas ref={canvasRef} className="reactbits-squares-canvas" onMouseMove={handleMouseMove} />
+      <canvas ref={canvasRef} className="reactbits-squares-canvas" />
       <div className="squares-fog"></div>
     </div>
   );

@@ -1,28 +1,16 @@
 import React from "react";
 import "../styles/footer.css";
 import { Link } from "react-router-dom";
-import LogoWall from "./reactbits/LogoWall";
-
-const logoItems = [
-  { icon: "fab fa-react", name: "React" },
-  { icon: "fab fa-python", name: "Python" },
-  { icon: "fab fa-js-square", name: "JavaScript" },
-  { icon: "fab fa-node-js", name: "Node.js" },
-  { icon: "fab fa-figma", name: "Figma" },
-  { icon: "fab fa-github", name: "GitHub" }
-];
 
 export default function Footer() {
   return (
     <footer className="footer">
-      <LogoWall 
-        items={logoItems} 
-        size="2.5rem" 
-        duration="40s" 
-        direction="left" 
-      />
-      <div className="container footer-content" style={{marginTop: "40px"}}>
-        
+      {/* Gradient top border */}
+      <div className="footer-gradient-border" />
+
+      {/* Main content */}
+      <div className="container footer-content">
+
         <div className="footer-col footer-brand">
           <h2>Skill Circle</h2>
           <p>
@@ -30,18 +18,17 @@ export default function Footer() {
           </p>
           <div className="social-links">
             <a href="https://www.instagram.com/" aria-label="Instagram" className="social-icon">
-              <i className="fab fa-instagram"></i>
+              <i className="fab fa-instagram" />
             </a>
             <a href="https://www.linkedin.com/" aria-label="LinkedIn" className="social-icon">
-              <i className="fab fa-linkedin"></i>
+              <i className="fab fa-linkedin" />
             </a>
             <a href="https://github.com/AbhiDhautre/Skill-Circle.git" aria-label="GitHub" className="social-icon">
-              <i className="fab fa-github"></i>
+              <i className="fab fa-github" />
             </a>
           </div>
         </div>
 
-        {/* Middle Links */}
         <div className="footer-col">
           <h3>Explore</h3>
           <ul className="footer-links">
@@ -51,7 +38,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Right Links */}
         <div className="footer-col">
           <h3>Platform</h3>
           <ul className="footer-links">

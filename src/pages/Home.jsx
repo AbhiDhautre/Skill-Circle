@@ -1,116 +1,243 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "../styles/home.css";
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
-import SpotlightCard from "../components/SpotlightCard";
-import RotatingText from "../components/RotatingText";
-import ShinyText from "../components/reactbits/ShinyText";
-import StarBorder from "../components/reactbits/StarBorder";
+import { motion, useInView } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HeroCanvas from "../components/HeroCanvas";
+import MagneticButton from "../components/MagneticButton";
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---- Scroll-reveal wrapper with Framer Motion ---- */
+function FadeUp({ children, delay = 0, className = "" }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 60 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ---- Stats ---- */
+const STATS = [
+  { num: "120+", label: "Active Learners" },
+  { num: "80+", label: "Skills Shared" },
+  { num: "300+", label: "Sessions Done" },
+];
+
+/* ---- Skills ---- */
+const SKILLS = [
+  { icon: "⚛️", title: "React Development", desc: "Build modern UI applications with React and the latest ecosystem tools." },
+  { icon: "🧠", title: "Data Structures", desc: "Improve logic and problem-solving skills with algorithms." },
+  { icon: "🎨", title: "Graphic Design", desc: "Create stunning visuals and interfaces using Figma and design thinking." },
+  { icon: "🤖", title: "Machine Learning", desc: "Explore AI models and real-world ML applications with peers." },
+];
 
 export default function Home() {
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+  const stepsContainerRef = useRef(null);
+  const formSectionRef = useRef(null);
+
+  // Track mouse for 3D canvas
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // GSAP Scroll Animations
+  React.useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. Pin and Reveal Steps
+      const stepCards = gsap.utils.toArray(".step-card");
+      if (stepCards.length) {
+        // Initial state
+        gsap.set(stepCards, { y: 60, opacity: 0, scale: 0.9 });
+
+        ScrollTrigger.create({
+          trigger: stepsContainerRef.current,
+          start: "top 20%",
+          end: "+=120%",
+          pin: true,
+          pinSpacing: true,
+          scrub: 1,
+          animation: gsap.to(stepCards, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            stagger: 0.2,
+            ease: "power2.out",
+          }),
+        });
+      }
+
+      // 2. Form section depth scale
+      if (formSectionRef.current) {
+        gsap.fromTo(
+          ".form-embed-wrapper",
+          { scale: 0.8, opacity: 0, rotationX: 10 },
+          {
+            scale: 1,
+            opacity: 1,
+            rotationX: 0,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: formSectionRef.current,
+              start: "top 80%",
+              end: "top 20%",
+              scrub: 1,
+            },
+          }
+        );
+      }
+    }); // removed containerRef scope to be safe
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="home-page">
-
+    <div className="home-page" ref={containerRef}>
+      {/* ====================================================
+          HERO — 3D IMMERSIVE
+         ==================================================== */}
       <section className="hero">
+        {/* LEFT */}
         <div className="hero-left">
-          <h1>
-            <ShinyText text="SKILL CIRCLE" disabled={false} speed={3} /> <br />
-            <RotatingText 
-              phrases={[
-                "A Peer-to-Peer Skill Exchange",
-                "Learn Together, Grow Together",
-                "Level Up Your Knowledge",
-                "Build Your Tech Network"
-              ]}
-              interval={4000}
-              highlightClass="highlight"
-            />
-          </h1>
+          <motion.div
+            className="hero-eyebrow"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <span className="hero-eyebrow-dot" />
+            Peer-to-Peer Skill Exchange
+          </motion.div>
 
-          <p>
-            Learn faster by teaching others and discovering skills from your peers.
-            Build your network, grow together, and level up your knowledge.
-          </p>
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="hero-heading-word">Learn.</span>
+            <span className="hero-heading-word">Build.</span>
+            <span className="hero-heading-word gradient">Connect.</span>
+          </motion.h1>
 
-          <div className="hero-buttons">
-            <Link to="/dashboard" style={{textDecoration: "none"}}>
-              <StarBorder as="div" color="#8b5cf6" speed="4s" style={{padding: "4px"}}>
-                 <span className="btn btn-primary" style={{margin:0, border:"none"}}>Get Started</span>
-              </StarBorder>
-            </Link>
+          <motion.p
+            className="hero-sub"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            A next-generation collaborative learning ecosystem powered by interaction, creativity, and shared growth.
+          </motion.p>
 
-            <Link to="/courses" style={{textDecoration: "none"}}>
-              <StarBorder as="div" color="#38bdf8" speed="5s" style={{padding: "4px"}}>
-                <span className="btn btn-outline" style={{margin:0, border:"none"}}>Browse Courses</span>
-              </StarBorder>
-            </Link>
-          </div>
+          <motion.div
+            className="hero-buttons"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.55 }}
+          >
+            <MagneticButton strength={0.2}>
+              <Link to="/dashboard" className="hero-btn-primary">
+                Get Started <span className="btn-arrow">→</span>
+              </Link>
+            </MagneticButton>
+            <MagneticButton strength={0.15}>
+              <Link to="/courses" className="hero-btn-secondary">
+                Browse Courses
+              </Link>
+            </MagneticButton>
+          </motion.div>
 
-          <div className="stats">
-            <SpotlightCard>
-              <h3>120+</h3>
-              <p>Active Learners</p>
-            </SpotlightCard>
-            <SpotlightCard>
-              <h3>80+</h3>
-              <p>Skills Shared</p>
-            </SpotlightCard>
-            <SpotlightCard>
-              <h3>300+</h3>
-              <p>Sessions Done</p>
-            </SpotlightCard>
-          </div>
+          <motion.div
+            className="hero-stats"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+          >
+            {STATS.map((stat, i) => (
+              <React.Fragment key={stat.label}>
+                {i > 0 && <div className="stat-divider" />}
+                <div className="stat-item">
+                  <span className="stat-num">{stat.num}</span>
+                  <span className="stat-label">{stat.label}</span>
+                </div>
+              </React.Fragment>
+            ))}
+          </motion.div>
         </div>
 
-        <div className="hero-visual">
-          <SpotlightCard className="hero-logo-shell" spotlightColor="rgba(56, 189, 248, 0.2)">
-            <img src={logo} alt="Skill Circle logo" className="hero-logo-image" />
-          </SpotlightCard>
-        </div>
+        {/* RIGHT — R3F Canvas */}
+        <motion.div
+          className="hero-visual"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 0.4 }}
+        >
+          <HeroCanvas mouseRef={mouseRef} />
+        </motion.div>
       </section>
 
-      <section className="section">
-        <h2 className="section-title">How It Works</h2>
+      {/* ====================================================
+          HOW IT WORKS (Pinned GSAP Section)
+         ==================================================== */}
+      <section className="how-section" ref={stepsContainerRef}>
+        <div className="how-header">
+          <div className="section-eyebrow">
+            <span className="section-eyebrow-dot" /> How It Works
+          </div>
+          <h2 className="section-title">The Ecosystem</h2>
+        </div>
 
         <div className="steps-grid">
-          <SpotlightCard className="step-card">
-            <span className="step-number">01</span>
-            <h3>Create Profile</h3>
-            <p>
-              Add your skills and interests so others can connect with you.
-            </p>
-          </SpotlightCard>
-
-          <SpotlightCard className="step-card">
-            <span className="step-number">02</span>
-            <h3>Connect</h3>
-            <p>
-              Find peers who match your learning goals or can teach you.
-            </p>
-          </SpotlightCard>
-
-          <SpotlightCard className="step-card">
-            <span className="step-number">03</span>
-            <h3>Grow</h3>
-            <p>
-              Learn together, complete challenges, and improve continuously.
-            </p>
-          </SpotlightCard>
+          {[
+            { num: "01", title: "Create Your Identity", desc: "Build a holographic profile. Add your skills and let the network discover your potential." },
+            { num: "02", title: "Neural Connection", desc: "Find learners in the ecosystem who match your goals or hold the knowledge you seek." },
+            { num: "03", title: "Shared Evolution", desc: "Exchange knowledge in real-time, complete challenges, and watch your XP grow." },
+          ].map((step, i) => (
+            <div key={step.num} className="step-card holo-card">
+              <span className="step-number">{step.num}</span>
+              <h3>{step.title}</h3>
+              <p>{step.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* SKILL DATASET FORM */}
-      <section className="section">
-        <h2 className="section-title">📋 Share Your Skills</h2>
-        <p className="section-subtitle">Help us build a stronger community — fill in your skills and we'll match you with the right peers.</p>
-        
+      {/* ====================================================
+          SHARE YOUR SKILLS FORM
+         ==================================================== */}
+      <section className="form-section" ref={formSectionRef}>
+        <div className="form-section-header">
+          <div className="section-eyebrow">
+            <span className="section-eyebrow-dot" /> Join the Network
+          </div>
+          <h2 className="section-title">Transmit Your Skills</h2>
+          <p className="section-subtitle" style={{ margin: "12px auto 0", textAlign: "center" }}>
+            Initialize your node in the network — we'll match you with the right peers automatically.
+          </p>
+        </div>
+
         <div className="form-showcase-container">
           <div className="form-embed-wrapper">
             <div className="window-header">
-              <span className="dot red"></span>
-              <span className="dot yellow"></span>
-              <span className="dot green"></span>
-              <div className="window-title">Skill Circle Application Form</div>
+              <span className="dot red" />
+              <span className="dot yellow" />
+              <span className="dot green" />
+              <div className="window-title">Skill_Transmission_Protocol.exe</div>
             </div>
             <iframe
               src="https://docs.google.com/forms/d/e/1FAIpQLScORoErOcwqP9qUJgNUxmSuWx9l_TCmwKwjh3rmKJlc9l94Iw/viewform?embedded=true"
@@ -121,39 +248,37 @@ export default function Home() {
               marginHeight="0"
               marginWidth="0"
             >
-              Loading…
+              Loading Protocol…
             </iframe>
           </div>
         </div>
       </section>
 
-      {/* POPULAR SKILLS */}
-      <section className="section">
-        <h2 className="section-title">Popular Skills</h2>
+      {/* ====================================================
+          POPULAR SKILLS — BENTO GRID
+         ==================================================== */}
+      <section className="skills-section">
+        <div className="skills-section-header">
+          <FadeUp>
+            <div className="section-eyebrow">
+              <span className="section-eyebrow-dot" /> Ecosystem Nodes
+            </div>
+            <h2 className="section-title">Trending Knowledge</h2>
+          </FadeUp>
+        </div>
 
-        <div className="skills-grid">
-          <SpotlightCard className="skill-card">
-            <h4>⚛️ React Development</h4>
-            <p>Build modern UI applications with React.</p>
-          </SpotlightCard>
-
-          <SpotlightCard className="skill-card">
-            <h4>🧠 Data Structures</h4>
-            <p>Improve logic and problem-solving skills.</p>
-          </SpotlightCard>
-
-          <SpotlightCard className="skill-card">
-            <h4>🎨 Graphic Design</h4>
-            <p>Create stunning visuals using Figma.</p>
-          </SpotlightCard>
-
-          <SpotlightCard className="skill-card">
-            <h4>🤖 Machine Learning</h4>
-            <p>Explore AI models and real-world applications.</p>
-          </SpotlightCard>
+        <div className="bento-grid">
+          {SKILLS.map((skill, i) => (
+            <FadeUp key={skill.title} delay={i * 0.1}>
+              <div className="bento-card spotlight-card-enhanced">
+                <span className="bento-card-icon">{skill.icon}</span>
+                <h4>{skill.title}</h4>
+                <p>{skill.desc}</p>
+              </div>
+            </FadeUp>
+          ))}
         </div>
       </section>
-
     </div>
   );
 }
