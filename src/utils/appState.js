@@ -416,6 +416,20 @@ export async function savePost(post) {
   }
 }
 
+export async function togglePostLike(postId, currentLikes, likedBy = []) {
+  if (!auth.currentUser) return;
+  const uid = auth.currentUser.uid;
+  const hasLiked = likedBy.includes(uid);
+  try {
+    await updateDoc(doc(db, "posts", postId), {
+      likes: hasLiked ? currentLikes - 1 : currentLikes + 1,
+      likedBy: hasLiked ? arrayRemove(uid) : arrayUnion(uid),
+    });
+  } catch (err) {
+    console.warn("Error toggling like:", err.message);
+  }
+}
+
 // ─── XP ───────────────────────────────────────────────────────────────────────
 
 export async function getXp() {

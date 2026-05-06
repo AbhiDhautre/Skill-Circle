@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../styles/community.css";
 import { toast } from "react-toastify";
-import { subscribeToPosts, getProfile, savePost, addXp, defaultPosts } from "../utils/appState";
+import { auth } from "../firebase";
+import { subscribeToPosts, getProfile, savePost, togglePostLike, addXp, defaultPosts } from "../utils/appState";
 import SpotlightCard from "../components/SpotlightCard";
 
 const getRelativeTime = (timestamp) => {
@@ -78,9 +79,14 @@ export default function Community() {
     toast.success("Post published to the community.");
   };
 
+  const currentUid = auth.currentUser?.uid;
+
   const handleLike = async (id) => {
-    setPosts(posts.map((post) => (post.id === id ? { ...post, likes: post.likes + 1 } : post)));
-    await addXp(10);
+    const post = posts.find((p) => p.id === id);
+    if (!post) return;
+    const hasLiked = post.likedBy?.includes(currentUid);
+    await togglePostLike(id, post.likes, post.likedBy || []);
+    if (!hasLiked) await addXp(10);
   };
 
   const handleAddComment = async (id) => {
@@ -148,7 +154,9 @@ export default function Community() {
             </div>
 
             <div className="actions">
-              <button className="btn-action" onClick={() => handleLike(post.id)}>❤️ Like ({post.likes})</button>
+              <button className="btn-action" onClick={() => handleLike(post.id)}>
+                {post.likedBy?.includes(currentUid) ? "💔 Unlike" : "❤️ Like"} ({post.likes})
+              </button>
               <button className="btn-action" onClick={() => setCommentInputs({ ...commentInputs, [post.id]: commentInputs[post.id] || "" })}>💬 Comment</button>
               <button className="btn-action" onClick={() => handleShare(post)}>🔗 Share</button>
             </div>
