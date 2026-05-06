@@ -444,6 +444,7 @@
    ============================================================ */
 .how-section {
   padding: var(--section-pad) 0;
+  position: relative;
 }
 
 .how-header {

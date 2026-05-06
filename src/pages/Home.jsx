@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroCanvas from "../components/HeroCanvas";
 import MagneticButton from "../components/MagneticButton";
+import { subscribeToStats } from "../utils/appState";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,13 +27,6 @@ function FadeUp({ children, delay = 0, className = "" }) {
   );
 }
 
-/* ---- Stats ---- */
-const STATS = [
-  { num: "120+", label: "Active Learners" },
-  { num: "80+", label: "Skills Shared" },
-  { num: "300+", label: "Sessions Done" },
-];
-
 /* ---- Skills ---- */
 const SKILLS = [
   { icon: "⚛️", title: "React Development", desc: "Build modern UI applications with React and the latest ecosystem tools." },
@@ -47,6 +41,21 @@ export default function Home() {
   const stepsContainerRef = useRef(null);
   const formSectionRef = useRef(null);
 
+  // Real-time Stats State
+  const [stats, setStats] = React.useState({
+    activeLearners: 0,
+    skillsShared: 0,
+    sessionsDone: 0
+  });
+
+  // Subscribe to global stats
+  useEffect(() => {
+    const unsub = subscribeToStats((newStats) => {
+      setStats(newStats);
+    });
+    return () => unsub();
+  }, []);
+
   // Track mouse for 3D canvas
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -60,26 +69,35 @@ export default function Home() {
   // GSAP Scroll Animations
   React.useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Pin and Reveal Steps
+      // 1. Reveal Step Cards with staggered batch
       const stepCards = gsap.utils.toArray(".step-card");
       if (stepCards.length) {
-        // Initial state
-        gsap.set(stepCards, { y: 60, opacity: 0, scale: 0.9 });
+        gsap.set(stepCards, { y: 80, opacity: 0, scale: 0.92 });
 
-        ScrollTrigger.create({
-          trigger: stepsContainerRef.current,
-          start: "top 20%",
-          end: "+=120%",
-          pin: true,
-          pinSpacing: true,
-          scrub: 1,
-          animation: gsap.to(stepCards, {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            stagger: 0.2,
-            ease: "power2.out",
-          }),
+        ScrollTrigger.batch(stepCards, {
+          start: "top 90%",
+          onEnter: (batch) => {
+            gsap.to(batch, {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 1,
+              stagger: 0.15,
+              ease: "power3.out",
+              overwrite: true,
+            });
+          },
+          onLeaveBack: (batch) => {
+            gsap.to(batch, {
+              y: 80,
+              opacity: 0,
+              scale: 0.92,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: "power2.in",
+              overwrite: true,
+            });
+          },
         });
       }
 
@@ -168,14 +186,17 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
           >
-            {STATS.map((stat, i) => (
-              <React.Fragment key={stat.label}>
-                {i > 0 && <div className="stat-divider" />}
+            {[
+              { num: `${stats.activeLearners}+`, label: "Active Learners" },
+              { num: `${stats.skillsShared}+`, label: "Skills Shared" },
+              { num: `${stats.sessionsDone}+`, label: "Sessions Done" },
+            ].map((stat, i) => (
+              <FadeUp key={i} delay={0.4 + i * 0.1}>
                 <div className="stat-item">
                   <span className="stat-num">{stat.num}</span>
                   <span className="stat-label">{stat.label}</span>
                 </div>
-              </React.Fragment>
+              </FadeUp>
             ))}
           </motion.div>
         </div>
