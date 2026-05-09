@@ -21,10 +21,6 @@ export const defaultCourses = [
 ];
 
 
-// In-memory cache for profile
-
-
-// In-memory cache for profile
 let localProfileCache = {
   name: "",
   email: "",
@@ -32,6 +28,49 @@ let localProfileCache = {
   primarySkill: "",
   bio: "Peer learner building skills one exchange at a time."
 };
+
+let localPosts = [];
+let localSkillPosts = [];
+let localXp = parseInt(localStorage.getItem("localXp") || "1250", 10);
+
+export const suggestedPeers = [
+  { id: 1, name: "Atharva Kanchan", skill: "Python, Java", role: "Intermediate CS", lookingFor: "AWS", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 2, name: "Mustafa Bhewala", skill: "JavaScript", role: "Intermediate Smad", lookingFor: "Web Development", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 3, name: "Mitanshu Sarode", skill: "Data Analytics", role: "Beginner SMAD", lookingFor: "Data Analytics", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 4, name: "Aditya Dilip Gavhane", skill: "Python, Java, SQL, Langchain, RAG", role: "Intermediate CSE", lookingFor: "Java", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 5, name: "Namrata Bade", skill: "SQL, Tableau, Python, C++", role: "Beginner ECE", lookingFor: "DSA", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 6, name: "Aryan Kanchan", skill: "Backend, AI", role: "Intermediate CSE", lookingFor: "Cloud Services", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 7, name: "Aditya Vijay Madane", skill: "Cloud, Big Data Analysis", role: "Intermediate CSE", lookingFor: "Python", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 8, name: "Tejaswini Bhujbal", skill: "Python, Java", role: "Intermediate Mitcom", lookingFor: "SQL", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 9, name: "Manasi Sanjay Kalbhor", skill: "Python, Machine Learning", role: "Beginner ECE", lookingFor: "Machine Learning and AI", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 10, name: "Anuj Ganesh Kanchan", skill: "Java, Web Development, AI/ML, SQL", role: "Intermediate AIA", lookingFor: "Java, Backend", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 11, name: "Samruddhi Chavan", skill: "Python", role: "Intermediate ECO", lookingFor: "DSA", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 12, name: "Joel Joseph", skill: "CAD, Coding, AI", role: "Beginner SOES", lookingFor: "CAD, Generative AI", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 13, name: "Gurneet Kaur Juneja", skill: "Web Development, App Development", role: "Intermediate IT", lookingFor: "React Native, Backend", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 14, name: "Aditi Chitnis", skill: "IAM, Cybersecurity", role: "Intermediate IT", lookingFor: "Cloud Security", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 15, name: "Mahima Kisan Kela", skill: "C++, Python, Java, JavaScript, Database", role: "Intermediate IT", lookingFor: "Web Development", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 16, name: "Tanishka Uttarkar", skill: "Python, AI/ML", role: "Intermediate CSE", lookingFor: "Artificial Intelligence", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 1850 },
+  { id: 17, name: "Mrunal Bharati", skill: "AutoCAD, SketchUp", role: "Advanced Architecture", lookingFor: "Architecture Design", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 18, name: "Shravani Ghongde", skill: "Java", role: "Advanced IT", lookingFor: "Advanced Java", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 19, name: "Aarya Thengne", skill: "HTML/CSS, JavaScript, Python, SQL, ML", role: "Intermediate IT", lookingFor: "AI/ML, Cybersecurity", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 20, name: "Vedashree Kulkarni", skill: "Python, Java, C++, React.js, Node.js", role: "Intermediate CS", lookingFor: "Full Stack Development", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 21, name: "Santosh Nimbalkar", skill: "Management", role: "Intermediate AIA", lookingFor: "AWS", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 22, name: "Pravin Ranmale", skill: "Python", role: "Intermediate IT", lookingFor: "Machine Learning", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 23, name: "Vaishnavi Mojad", skill: "Python", role: "Intermediate IT", lookingFor: "Machine Learning", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 24, name: "Khyati Paruchuri", skill: "Python, Java, ML, DL", role: "Advanced CSE", lookingFor: "C++", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 25, name: "Varad Vikas Mandhare", skill: "C++, Cybersecurity", role: "Beginner E&TC", lookingFor: "Docker", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 26, name: "Divya Shahaji Nagare", skill: "Data Entry", role: "Beginner BBA", lookingFor: "Digital Marketing", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 27, name: "Kedar Pradip Kulkarni", skill: "Web Development", role: "Intermediate IT", lookingFor: "AI", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 },
+  { id: 28, name: "Sayali Ingole", skill: "Data Analytics", role: "Intermediate CSE", lookingFor: "General", avatar: "https://www.pngplay.com/wp-content/uploads/12/User-Avatar-Profile-PNG-Pic-Clip-Art-Background.png", xp: 0 }
+];
+
+export const defaultPosts = [
+  { id: "post_1", author: "Aarav Nair", title: "Looking for a React study group!", content: "Hey everyone! I'm forming a small React JS study circle for this weekend. Anyone interested?", tags: ["React", "Frontend", "Collaboration"], time: "2h ago", likes: 4, comments: [], createdAt: Date.now() - 7200000 },
+  { id: "post_2", author: "Nina Patel", title: "Need design feedback", content: "I've created a poster for the upcoming college fest and would love feedback from design folks.", tags: ["UI/UX", "Figma", "Design"], time: "5h ago", likes: 2, comments: [], createdAt: Date.now() - 18000000 },
+  { id: "post_3", author: "Deep Verma", title: "DSA challenge for this week", content: "Let's solve 10 Leetcode questions together this weekend. Who's in?", tags: ["DSA", "Coding", "Problem Solving"], time: "1d ago", likes: 3, comments: [], createdAt: Date.now() - 86400000 }
+];
+
+let hasSeededPosts = false;
 
 
 
@@ -42,17 +81,31 @@ export function subscribeToPosts(callback) {
       q,
       async (snapshot) => {
         const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        callback(posts);
+        const mergedPosts = [...localPosts, ...posts].sort((a, b) => b.createdAt - a.createdAt);
+        if (mergedPosts.length === 0 && !hasSeededPosts) {
+          hasSeededPosts = true;
+          try {
+            for (const p of defaultPosts) {
+              const { id, ...postData } = p;
+              await addDoc(collection(db, "posts"), postData);
+            }
+          } catch (seedErr) {
+            console.warn("Could not seed posts:", seedErr.message);
+            callback([...localPosts, ...defaultPosts].sort((a, b) => b.createdAt - a.createdAt));
+          }
+        } else {
+          callback(mergedPosts.length > 0 ? mergedPosts : defaultPosts);
+        }
       },
       (error) => {
         console.warn("Real-time posts listener error:", error.message);
-        callback([]);
+        callback([...localPosts, ...defaultPosts].sort((a, b) => b.createdAt - a.createdAt));
       }
     );
     return unsubscribe;
   } catch (err) {
     console.warn("subscribeToPosts setup error:", err.message);
-    callback([]);
+    callback([...localPosts, ...defaultPosts].sort((a, b) => b.createdAt - a.createdAt));
     return () => { };
   }
 }
@@ -64,7 +117,7 @@ export function subscribeToPosts(callback) {
  */
 export function subscribeToUser(callback) {
   if (!auth.currentUser) {
-    callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 1250 });
+    callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: localXp });
     return () => { };
   }
 
@@ -76,27 +129,32 @@ export function subscribeToUser(callback) {
         if (docSnap.exists()) {
           const data = docSnap.data();
           localProfileCache = data.profile || localProfileCache;
+          const userXp = data.xp !== undefined ? data.xp : localXp;
+          if (data.xp !== undefined) {
+             localXp = data.xp;
+             localStorage.setItem("localXp", localXp.toString());
+          }
           callback({
             profile: localProfileCache,
             enrollments: data.enrollments?.length ? data.enrollments : defaultCourses.slice(0, 3),
             connections: data.connections || [],
-            xp: data.xp ?? 0,
+            xp: userXp,
             incomingRequests: data.incomingRequests || [],
             notifications: data.notifications || []
           });
         } else {
-          callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 0, incomingRequests: [], notifications: [] });
+          callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: localXp, incomingRequests: [], notifications: [] });
         }
       },
       (error) => {
         console.warn("Real-time user listener error:", error.message);
-        callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 0, incomingRequests: [], notifications: [] });
+        callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: localXp, incomingRequests: [], notifications: [] });
       }
     );
     return unsubscribe;
   } catch (err) {
     console.warn("subscribeToUser setup error:", err.message);
-    callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: 0 });
+    callback({ profile: localProfileCache, enrollments: defaultCourses.slice(0, 3), connections: [], xp: localXp });
     return () => { };
   }
 }
@@ -111,7 +169,7 @@ export function subscribeToAllUsers(callback) {
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const users = snapshot.docs.map((doc) => {
+        const liveUsers = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
             id: doc.id,
@@ -124,18 +182,18 @@ export function subscribeToAllUsers(callback) {
             enrollmentNumber: data.profile?.enrollmentNumber || ""
           };
         });
-        // Only return live users from Firebase
-        callback(users);
+        const liveIds = new Set(liveUsers.map((u) => u.id));
+        callback([...liveUsers, ...suggestedPeers.filter((p) => !liveIds.has(p.id))]);
       },
       (error) => {
         console.warn("Real-time all-users listener error:", error.message);
-        callback([]);
+        callback(suggestedPeers);
       }
     );
     return unsubscribe;
   } catch (err) {
     console.warn("subscribeToAllUsers setup error:", err.message);
-    callback([]);
+    callback(suggestedPeers);
     return () => { };
   }
 }
@@ -458,10 +516,14 @@ export async function clearNotifications() {
 // ─── Community Posts ──────────────────────────────────────────────────────────
 
 export async function savePost(post) {
+  const newPost = { ...post, createdAt: Date.now() };
   try {
-    await addDoc(collection(db, "posts"), { ...post, createdAt: Date.now() });
+    const docRef = await addDoc(collection(db, "posts"), newPost);
+    newPost.id = docRef.id;
   } catch (err) {
-    console.warn("Error saving post:", err.message);
+    console.warn("Error saving post, using local fallback:", err.message);
+    newPost.id = `local_${Date.now()}`;
+    localPosts.unshift(newPost);
   }
 }
 
@@ -482,7 +544,7 @@ export async function togglePostLike(postId, currentLikes, likedBy = []) {
 // ─── XP ───────────────────────────────────────────────────────────────────────
 
 export async function getXp() {
-  if (!auth.currentUser) return 0;
+  if (!auth.currentUser) return localXp;
   try {
     const docRef = doc(db, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
@@ -490,13 +552,19 @@ export async function getXp() {
   } catch (error) {
     console.warn("Firestore error in getXp:", error.message);
   }
-  return 0;
+  return localXp;
 }
 
 export async function addXp(amount) {
-  if (!auth.currentUser) return 0;
+  if (!auth.currentUser) {
+     localXp += amount;
+     localStorage.setItem("localXp", localXp.toString());
+     return localXp;
+  }
   const currentXp = await getXp();
   const nextXp = currentXp + amount;
+  localXp = nextXp;
+  localStorage.setItem("localXp", localXp.toString());
   try {
     const docRef = doc(db, "users", auth.currentUser.uid);
     await updateDoc(docRef, { xp: nextXp });
@@ -516,15 +584,16 @@ export function clearSessionState() {
  * Saves a skill exchange post to Firestore.
  */
 export async function saveSkillPost(post) {
+  const newPost = { ...post, createdAt: Date.now() };
   try {
-    await addDoc(collection(db, "skillPosts"), {
-      ...post,
-      createdAt: Date.now()
-    });
+    const docRef = await addDoc(collection(db, "skillPosts"), newPost);
+    newPost.id = docRef.id;
     await addXp(50);
   } catch (err) {
-    console.warn("Error saving skill post:", err.message);
-    throw err;
+    console.warn("Error saving skill post, using local fallback:", err.message);
+    newPost.id = `local_${Date.now()}`;
+    localSkillPosts.unshift(newPost);
+    await addXp(50);
   }
 }
 
@@ -538,17 +607,17 @@ export function subscribeToSkillPosts(callback) {
       q,
       (snapshot) => {
         const posts = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        callback(posts);
+        callback([...localSkillPosts, ...posts].sort((a, b) => b.createdAt - a.createdAt));
       },
       (error) => {
         console.warn("Skill posts listener error:", error.message);
-        callback([]);
+        callback(localSkillPosts);
       }
     );
     return unsubscribe;
   } catch (err) {
     console.warn("subscribeToSkillPosts setup error:", err.message);
-    callback([]);
+    callback(localSkillPosts);
     return () => { };
   }
 }

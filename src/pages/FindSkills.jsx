@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
   subscribeToAllUsers, subscribeToUser,
   sendConnectionRequest, acceptConnectionRequest, declineConnectionRequest,
-  connectWithPeer,
+  connectWithPeer, suggestedPeers,
   subscribeToSkillPosts, saveSkillPost
 } from "../utils/appState";
 import { auth } from "../firebase";
@@ -37,7 +37,7 @@ export default function FindSkills() {
   const CLUSTERS = ["All", "Web Development", "App Development", "AI/ML", "UI/UX", "Backend", "Data Science"];
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCluster, setSelectedCluster] = useState("All");
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState(suggestedPeers);
   const [myProfile, setMyProfile] = useState({});
   const [myConnections, setMyConnections] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);

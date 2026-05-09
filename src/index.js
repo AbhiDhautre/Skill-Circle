@@ -7,9 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const root = createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );
